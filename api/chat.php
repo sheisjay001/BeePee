@@ -19,9 +19,9 @@ if (empty($userMessage)) {
     exit;
 }
 
-if (GROQ_API_KEY === 'your_groq_api_key_here') {
+if (GROQ_API_KEY === 'your_groq_api_key_here' || empty(GROQ_API_KEY)) {
     http_response_code(500);
-    echo json_encode(['status' => 'error', 'message' => 'API Key not configured']);
+    echo json_encode(['status' => 'error', 'message' => 'Configuration Error: GROQ_API_KEY is missing or invalid. Please set it in your environment variables.']);
     exit;
 }
 

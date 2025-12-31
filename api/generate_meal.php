@@ -18,6 +18,12 @@ if (empty($ingredients)) {
     exit;
 }
 
+if (GROQ_API_KEY === 'your_groq_api_key_here' || empty(GROQ_API_KEY)) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Configuration Error: GROQ_API_KEY is missing.']);
+    exit;
+}
+
 // System prompt to act as a nutritionist
 $systemPrompt = "You are an expert nutritionist and chef for BeePee, an app for managing blood pressure and blood sugar. 
 Your task is to generate a delicious, healthy recipe based on the user's available ingredients.
