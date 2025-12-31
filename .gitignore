@@ -11,5 +11,5 @@ data/*.sqlite
 ehthumbs.db
 Thumbs.db
 
-# Config with secrets (optional, but good practice)
-# includes/config.php
+# Secrets
+includes/config.local.php
