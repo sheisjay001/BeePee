@@ -4,6 +4,7 @@
   },
   "routes": [
     { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/tracker", "dest": "/api/tracker_ui.php" },
     { "src": "/tracker.php", "dest": "/api/tracker_ui.php" },
     { "src": "/chat", "dest": "/api/chat_ui.php" },
