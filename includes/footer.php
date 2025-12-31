@@ -20,5 +20,15 @@
             </div>
         </div>
     </footer>
+    <script>
+    async function logout() {
+        try {
+            await fetch('/api/logout.php');
+            window.location.href = '/login';
+        } catch (e) {
+            console.error('Logout failed', e);
+        }
+    }
+    </script>
 </body>
 </html>

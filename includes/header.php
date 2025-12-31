@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/config.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,6 +62,15 @@
                         <a href="chat.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Ask AI</a>
                     </div>
                 </div>
+                <div class="hidden sm:flex sm:items-center">
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <span class="text-gray-300 text-sm mr-4">Hi, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                        <a href="#" onclick="logout()" class="text-gray-300 hover:text-white text-sm font-medium">Logout</a>
+                    <?php else: ?>
+                        <a href="login" class="text-gray-300 hover:text-white text-sm font-medium mr-4">Login</a>
+                        <a href="register" class="bg-accent text-primary-900 hover:bg-white px-3 py-2 rounded-md text-sm font-medium">Sign Up</a>
+                    <?php endif; ?>
+                </div>
                 <div class="flex items-center sm:hidden">
                     <!-- Mobile menu button -->
                     <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-accent" aria-controls="mobile-menu" aria-expanded="false" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
@@ -78,6 +88,12 @@
                 <a href="tracker.php" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Tracker</a>
                 <a href="meal_prep.php" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Meal Prep</a>
                 <a href="chat.php" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Ask AI</a>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <a href="#" onclick="logout()" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Logout</a>
+                <?php else: ?>
+                    <a href="login" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Login</a>
+                    <a href="register" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Sign Up</a>
+                <?php endif; ?>
             </div>
         </div>
     </nav>

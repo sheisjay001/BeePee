@@ -1,4 +1,11 @@
-<?php include __DIR__ . '/../includes/header.php'; ?>
+<?php 
+include __DIR__ . '/../includes/header.php'; 
+
+if (!isset($_SESSION['user_id'])) {
+    echo "<script>window.location.href = '/login';</script>";
+    exit;
+}
+?>
 
 <div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8 h-[calc(100vh-140px)] flex flex-col">
     <div class="text-center mb-6">

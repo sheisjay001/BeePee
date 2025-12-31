@@ -1,14 +1,23 @@
 <?php
 // api/tracker.php
 header('Content-Type: application/json');
+require_once __DIR__ . '/../includes/config.php';
 require_once __DIR__ . '/../includes/db.php';
 
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
+    exit;
+}
+
+$userId = $_SESSION['user_id'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
-    // Fetch logs
+    // Fetch logs for user
     try {
-        $stmt = $pdo->query("SELECT * FROM health_logs ORDER BY log_date ASC, created_at ASC");
+        $stmt = $pdo->prepare("SELECT * FROM health_logs WHERE user_id = ? ORDER BY log_date ASC, created_at ASC");
+        $stmt->execute([$userId]);
         $logs = $stmt->fetchAll();
         echo json_encode(['status' => 'success', 'data' => $logs]);
     } catch (Exception $e) {
@@ -26,8 +35,9 @@ if ($method === 'GET') {
     }
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO health_logs (log_date, systolic, diastolic, blood_sugar, weight, notes) VALUES (:date, :sys, :dia, :sugar, :weight, :notes)");
+        $stmt = $pdo->prepare("INSERT INTO health_logs (user_id, log_date, systolic, diastolic, blood_sugar, weight, notes) VALUES (:uid, :date, :sys, :dia, :sugar, :weight, :notes)");
         $stmt->execute([
+            ':uid' => $userId,
             ':date' => $data['date'] ?? date('Y-m-d'),
             ':sys' => $data['systolic'] ?? null,
             ':dia' => $data['diastolic'] ?? null,

@@ -11,6 +11,8 @@
     { "src": "/chat.php", "dest": "/api/chat_ui.php" },
     { "src": "/meal_prep", "dest": "/api/meal_prep.php" },
     { "src": "/meal_prep.php", "dest": "/api/meal_prep.php" },
+    { "src": "/login", "dest": "/api/login_ui.php" },
+    { "src": "/register", "dest": "/api/register_ui.php" },
     { "src": "/", "dest": "/api/index.php" },
     { "src": "/index.php", "dest": "/api/index.php" }
   ]

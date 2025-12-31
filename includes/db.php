@@ -27,6 +27,7 @@ try {
     // Create table if not exists - MySQL Syntax
     $sql = "CREATE TABLE IF NOT EXISTS health_logs (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT,
         log_date DATE NOT NULL,
         systolic INT,
         diastolic INT,
@@ -37,6 +38,23 @@ try {
     )";
     
     $pdo->exec($sql);
+
+    // Create users table
+    $userSql = "CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(50) NOT NULL UNIQUE,
+        email VARCHAR(100) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )";
+    $pdo->exec($userSql);
+
+    // Attempt to add user_id column if it doesn't exist (for migration)
+    try {
+        $pdo->exec("ALTER TABLE health_logs ADD COLUMN user_id INT AFTER id");
+    } catch (Exception $e) {
+        // Column likely already exists, ignore
+    }
 
 } catch (PDOException $e) {
     // Fallback to SQLite if MySQL fails (for local dev without internet/creds)

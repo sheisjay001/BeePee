@@ -1,6 +1,10 @@
 <?php
 // includes/config.php
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Helper to get env var from various sources
 function get_env_var($key) {
     // Check getenv
