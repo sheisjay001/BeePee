@@ -44,19 +44,35 @@
     </div>
     
     <!-- AI Meal Generator Section -->
-    <div class="mt-16 bg-green-50 rounded-xl p-8 border border-green-100">
-        <div class="text-center">
-            <h2 class="text-2xl font-bold text-gray-900">Need something specific?</h2>
-            <p class="mt-2 text-gray-600">Ask our AI Nutritionist to generate a custom meal plan or recipe for you based on your ingredients.</p>
-            <div class="mt-6 max-w-xl mx-auto flex gap-4">
-                <input type="text" id="customMealInput" placeholder="e.g. Vegetarian dinner with avocado..." class="flex-1 shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md p-3 border">
-                <button onclick="generateCustomMeal()" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                    Generate
-                </button>
+    <div class="mt-16 bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-8 border border-green-200 shadow-sm relative overflow-hidden">
+        <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-primary opacity-10 rounded-full blur-2xl"></div>
+        
+        <div class="text-center relative z-10">
+            <h2 class="text-3xl font-extrabold text-green-900">AI Chef: What's in your fridge?</h2>
+            <p class="mt-3 text-lg text-green-700 max-w-2xl mx-auto">
+                Don't know what to cook? Enter your available ingredients, and our AI will generate a custom, heart-healthy recipe just for you.
+            </p>
+            
+            <div class="mt-8 max-w-xl mx-auto">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="ingredients-input" 
+                        placeholder="e.g. Chicken breast, spinach, garlic, lemon" 
+                        class="flex-1 appearance-none border border-green-300 rounded-lg px-4 py-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition duration-200">
+                    <button onclick="generateRecipe()" id="generate-btn"
+                        class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-md transition-all transform hover:scale-105">
+                        <span>Generate Recipe</span>
+                        <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </button>
+                </div>
+                <p class="mt-2 text-sm text-green-600 text-left italic">
+                    * AI will optimize for low sodium and glycemic index.
+                </p>
             </div>
-            <div id="aiResult" class="mt-6 text-left hidden bg-white p-6 rounded-lg shadow border border-gray-200 prose max-w-none">
-                <!-- AI Output -->
-            </div>
+        </div>
+
+        <!-- Generated Recipe Display -->
+        <div id="generated-recipe-container" class="hidden mt-10 bg-white rounded-xl shadow-lg border border-green-100 overflow-hidden transition-all duration-500">
+            <!-- Content injected by JS -->
         </div>
     </div>
 

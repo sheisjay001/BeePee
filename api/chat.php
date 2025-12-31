@@ -2,6 +2,7 @@
 // api/chat.php
 header('Content-Type: application/json');
 require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -24,12 +25,35 @@ if (GROQ_API_KEY === 'your_groq_api_key_here') {
     exit;
 }
 
+// Fetch recent health logs for context
+$contextMsg = "";
+try {
+    $stmt = $pdo->query("SELECT log_date, systolic, diastolic, blood_sugar, weight FROM health_logs ORDER BY log_date DESC LIMIT 5");
+    $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    if ($logs) {
+        $contextMsg = "Here is the user's recent health data (Date: Systolic/Diastolic BP, Sugar, Weight): ";
+        foreach ($logs as $log) {
+            $contextMsg .= "[{$log['log_date']}: {$log['systolic']}/{$log['diastolic']} mmHg, Sugar: {$log['blood_sugar']} mg/dL, Weight: {$log['weight']} kg]; ";
+        }
+        $contextMsg .= ". Use this data to provide personalized advice if relevant to the question.";
+    }
+} catch (Exception $e) {
+    // Ignore DB errors for chat context, just proceed without it
+}
+
+$systemPrompt = 'You are BeePee AI, a helpful and knowledgeable nutritionist and health assistant. Your goal is to educate people on the correct diet to stabilize their blood sugar and blood pressure. You provide scientific, safe, and practical advice. Always remind users to consult with a doctor for serious medical conditions. Keep your answers concise, encouraging, and easy to understand.';
+
+if (!empty($contextMsg)) {
+    $systemPrompt .= " " . $contextMsg;
+}
+
 $payload = [
     'model' => 'llama3-70b-8192',
     'messages' => [
         [
             'role' => 'system',
-            'content' => 'You are BeePee AI, a helpful and knowledgeable nutritionist and health assistant. Your goal is to educate people on the correct diet to stabilize their blood sugar and blood pressure. You provide scientific, safe, and practical advice. Always remind users to consult with a doctor for serious medical conditions. Keep your answers concise, encouraging, and easy to understand.'
+            'content' => $systemPrompt
         ],
         [
             'role' => 'user',
