@@ -43,7 +43,7 @@ Do not include any markdown formatting or extra text, just the JSON.";
 $userPrompt = "I have the following ingredients: " . $ingredients . ". Please generate a healthy meal.";
 
 $payload = [
-    'model' => 'llama3-70b-8192',
+    'model' => 'llama-3.3-70b-versatile',
     'messages' => [
         ['role' => 'system', 'content' => $systemPrompt],
         ['role' => 'user', 'content' => $userPrompt]
