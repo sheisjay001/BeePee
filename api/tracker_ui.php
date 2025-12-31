@@ -1,4 +1,4 @@
-<?php include 'includes/header.php'; ?>
+<?php include '../includes/header.php'; ?>
 
 <div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
     <div class="md:grid md:grid-cols-3 md:gap-6">
@@ -88,5 +88,5 @@
     </div>
 </div>
 
-<script src="assets/js/tracker.js"></script>
-<?php include 'includes/footer.php'; ?>
+<script src="../assets/js/tracker.js"></script>
+<?php include '../includes/footer.php'; ?>

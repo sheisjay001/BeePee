@@ -1,13 +1,16 @@
 {
   "functions": {
-    "api/*.php": { "runtime": "vercel-php@0.6.0" },
-    "index.php": { "runtime": "vercel-php@0.6.0" },
-    "chat.php": { "runtime": "vercel-php@0.6.0" },
-    "tracker.php": { "runtime": "vercel-php@0.6.0" },
-    "meal_prep.php": { "runtime": "vercel-php@0.6.0" }
+    "api/*.php": { "runtime": "vercel-php@0.6.0" }
   },
   "routes": [
     { "src": "/assets/(.*)", "dest": "/assets/$1" },
-    { "src": "/(.*)", "dest": "/$1" }
+    { "src": "/tracker", "dest": "/api/tracker_ui.php" },
+    { "src": "/tracker.php", "dest": "/api/tracker_ui.php" },
+    { "src": "/chat", "dest": "/api/chat_ui.php" },
+    { "src": "/chat.php", "dest": "/api/chat_ui.php" },
+    { "src": "/meal_prep", "dest": "/api/meal_prep.php" },
+    { "src": "/meal_prep.php", "dest": "/api/meal_prep.php" },
+    { "src": "/", "dest": "/api/index.php" },
+    { "src": "/index.php", "dest": "/api/index.php" }
   ]
 }
