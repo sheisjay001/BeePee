@@ -70,13 +70,14 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
     'Content-Type: application/json',
     'Authorization: Bearer ' . GROQ_API_KEY
 ]);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Fix for local XAMPP SSL issues
 
 $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 if (curl_errno($ch)) {
     http_response_code(500);
-    echo json_encode(['status' => 'error', 'message' => curl_error($ch)]);
+    echo json_encode(['status' => 'error', 'message' => 'Curl Error: ' . curl_error($ch)]);
 } else {
     http_response_code($httpCode);
     echo $response;
