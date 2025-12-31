@@ -1,4 +1,4 @@
-<?php include '../includes/header.php'; ?>
+<?php include __DIR__ . '/../includes/header.php'; ?>
 
 <div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-10">
@@ -63,4 +63,4 @@
 </div>
 
 <script src="../assets/js/meal_prep.js"></script>
-<?php include '../includes/footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

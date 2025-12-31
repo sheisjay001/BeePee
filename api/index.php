@@ -1,4 +1,4 @@
-<?php include '../includes/header.php'; ?>
+<?php include __DIR__ . '/../includes/header.php'; ?>
 
 <div class="relative bg-white overflow-hidden">
     <div class="max-w-7xl mx-auto">
@@ -112,4 +112,4 @@
     </div>
 </div>
 
-<?php include '../includes/footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>
