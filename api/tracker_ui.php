@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
     <div class="md:grid md:grid-cols-3 md:gap-6">
         <div class="md:col-span-1">
             <div class="px-4 sm:px-0">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">Health Log</h3>
+                <h3 class="text-lg font-medium leading-6 text-gray-900">Dashboard</h3>
                 <p class="mt-1 text-sm text-gray-600">
                     Record your daily measurements to track your progress over time.
                 </p>

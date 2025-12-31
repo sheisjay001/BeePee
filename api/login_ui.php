@@ -80,7 +80,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const result = await response.json();
 
         if (response.ok) {
-            window.location.href = '/tracker.php';
+            window.location.href = '/dashboard';
         } else {
             messageEl.textContent = result.message || 'Login failed';
             messageEl.classList.remove('hidden');

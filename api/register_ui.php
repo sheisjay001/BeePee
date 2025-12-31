@@ -74,7 +74,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         const result = await response.json();
 
         if (response.ok) {
-            window.location.href = '/tracker.php';
+            window.location.href = '/dashboard';
         } else {
             messageEl.textContent = result.message || 'Registration failed';
             messageEl.classList.remove('hidden');
