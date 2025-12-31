@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const userInput = document.getElementById('userInput');
     const chatContainer = document.getElementById('chatContainer');
     const sendBtn = document.getElementById('sendBtn');
+    
+    // Maintain conversation history
+    let conversationHistory = [];
 
     chatForm.addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -10,8 +13,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const message = userInput.value.trim();
         if (!message) return;
 
-        // Add User Message
+        // Add User Message to UI
         appendMessage('user', message);
+        
+        // Add to history
+        conversationHistory.push({ role: 'user', content: message });
+        
+        // Keep history manageable (last 10 messages)
+        if (conversationHistory.length > 10) {
+            conversationHistory = conversationHistory.slice(conversationHistory.length - 10);
+        }
+
         userInput.value = '';
         userInput.disabled = true;
         sendBtn.disabled = true;
@@ -25,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ message: message })
+                body: JSON.stringify({ messages: conversationHistory })
             });
 
             const data = await response.json();
@@ -36,14 +48,20 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 const aiResponse = data.choices[0].message.content;
                 appendMessage('ai', aiResponse);
+                
+                // Add AI response to history
+                conversationHistory.push({ role: 'assistant', content: aiResponse });
             } else {
-                appendMessage('error', 'Sorry, something went wrong. Please check your API key or try again later.');
+                appendMessage('error', 'Sorry, something went wrong: ' + (data.message || 'Unknown error'));
+                // Remove failed message from history so we don't send it again
+                conversationHistory.pop(); 
             }
 
         } catch (error) {
             console.error('Error:', error);
             removeMessage(loadingId);
             appendMessage('error', 'Network error. Please try again.');
+            conversationHistory.pop();
         } finally {
             userInput.disabled = false;
             sendBtn.disabled = false;

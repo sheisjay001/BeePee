@@ -12,10 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $input = json_decode(file_get_contents('php://input'), true);
 $userMessage = $input['message'] ?? '';
+$history = $input['messages'] ?? []; // New: Support history
 
-if (empty($userMessage)) {
+if (empty($userMessage) && empty($history)) {
     http_response_code(400);
-    echo json_encode(['status' => 'error', 'message' => 'Message is required']);
+    echo json_encode(['status' => 'error', 'message' => 'Message or history is required']);
     exit;
 }
 
@@ -48,18 +49,28 @@ if (!empty($contextMsg)) {
     $systemPrompt .= " " . $contextMsg;
 }
 
+// Construct messages array
+$messages = [];
+$messages[] = ['role' => 'system', 'content' => $systemPrompt];
+
+// If history is provided, append it
+if (!empty($history) && is_array($history)) {
+    foreach ($history as $msg) {
+        if (isset($msg['role']) && isset($msg['content'])) {
+            $messages[] = [
+                'role' => $msg['role'],
+                'content' => $msg['content']
+            ];
+        }
+    }
+} elseif (!empty($userMessage)) {
+    // Fallback for old single-message format
+    $messages[] = ['role' => 'user', 'content' => $userMessage];
+}
+
 $payload = [
     'model' => 'llama-3.3-70b-versatile',
-    'messages' => [
-        [
-            'role' => 'system',
-            'content' => $systemPrompt
-        ],
-        [
-            'role' => 'user',
-            'content' => $userMessage
-        ]
-    ]
+    'messages' => $messages
 ];
 
 $ch = curl_init('https://api.groq.com/openai/v1/chat/completions');
