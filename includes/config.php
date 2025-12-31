@@ -11,15 +11,15 @@ class PdoSessionHandler implements SessionHandlerInterface {
         $this->pdo = $pdo;
     }
 
-    public function open($savePath, $sessionName) {
+    public function open(string $path, string $name): bool {
         return true;
     }
 
-    public function close() {
+    public function close(): bool {
         return true;
     }
 
-    public function read($id) {
+    public function read(string $id): string|false {
         try {
             $stmt = $this->pdo->prepare("SELECT data FROM sessions WHERE id = :id");
             $stmt->execute([':id' => $id]);
@@ -30,7 +30,7 @@ class PdoSessionHandler implements SessionHandlerInterface {
         }
     }
 
-    public function write($id, $data) {
+    public function write(string $id, string $data): bool {
         try {
             $access = time();
             $stmt = $this->pdo->prepare("REPLACE INTO sessions (id, access, data) VALUES (:id, :access, :data)");
@@ -40,7 +40,7 @@ class PdoSessionHandler implements SessionHandlerInterface {
         }
     }
 
-    public function destroy($id) {
+    public function destroy(string $id): bool {
         try {
             $stmt = $this->pdo->prepare("DELETE FROM sessions WHERE id = :id");
             return $stmt->execute([':id' => $id]);
@@ -49,11 +49,12 @@ class PdoSessionHandler implements SessionHandlerInterface {
         }
     }
 
-    public function gc($maxlifetime) {
+    public function gc(int $max_lifetime): int|false {
         try {
-            $old = time() - $maxlifetime;
+            $old = time() - $max_lifetime;
             $stmt = $this->pdo->prepare("DELETE FROM sessions WHERE access < :old");
-            return $stmt->execute([':old' => $old]);
+            $stmt->execute([':old' => $old]);
+            return $stmt->rowCount();
         } catch (PDOException $e) {
             return false;
         }
