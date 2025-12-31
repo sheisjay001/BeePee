@@ -49,6 +49,14 @@ try {
     )";
     $pdo->exec($userSql);
 
+    // Create sessions table for persistent sessions on Vercel
+    $sessionSql = "CREATE TABLE IF NOT EXISTS sessions (
+        id VARCHAR(128) NOT NULL PRIMARY KEY,
+        access INT(10) UNSIGNED,
+        data TEXT
+    )";
+    $pdo->exec($sessionSql);
+
     // Attempt to add user_id column if it doesn't exist (for migration)
     try {
         $pdo->exec("ALTER TABLE health_logs ADD COLUMN user_id INT AFTER id");
