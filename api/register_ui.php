@@ -128,7 +128,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     try {
-        const response = await fetch('/api/register.php', {
+        const response = await fetch('register.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -170,18 +170,6 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         }).showToast();
         btn.disabled = false;
         btn.innerText = originalText;
-    }
-});
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        Toastify({
-            text: 'An error occurred. Please try again.',
-            duration: 3000,
-            gravity: "top",
-            position: "right",
-            backgroundColor: "#EF4444",
-        }).showToast();
     }
 });
 </script>

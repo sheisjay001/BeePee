@@ -2,7 +2,7 @@
 include __DIR__ . '/../includes/header.php'; 
 
 if (!isset($_SESSION['user_id'])) {
-    echo "<script>window.location.href = '/login';</script>";
+    echo "<script>window.location.href = 'login_ui.php';</script>";
     exit;
 }
 ?>
@@ -118,7 +118,7 @@ if (!isset($_SESSION['user_id'])) {
                         <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
                             <h3 class="text-lg leading-6 font-medium text-gray-900">Recent Logs</h3>
                             <div class="flex space-x-2">
-                                <a href="/api/export_logs.php" target="_blank" class="text-sm bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-3 py-2 rounded-md font-medium transition-colors">
+                                <a href="export_logs.php" target="_blank" class="text-sm bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-3 py-2 rounded-md font-medium transition-colors">
                                     Export CSV
                                 </a>
                                 <button onclick="document.getElementById('trackerFormContainer').scrollIntoView({behavior: 'smooth'})" class="text-sm text-primary hover:text-secondary font-medium md:hidden">

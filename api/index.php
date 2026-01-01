@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../includes/config.php';
 
 if (isset($_SESSION['user_id'])) {
-    echo "<script>window.location.href = '/dashboard';</script>";
+    echo "<script>window.location.href = 'tracker_ui.php';</script>";
     exit;
 }
 
@@ -27,12 +27,12 @@ include __DIR__ . '/../includes/header.php';
                     </p>
                     <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                         <div class="rounded-md shadow">
-                            <a href="tracker.php" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-secondary md:py-4 md:text-lg md:px-10">
+                            <a href="tracker_ui.php" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-secondary md:py-4 md:text-lg md:px-10">
                                 Start Tracking
                             </a>
                         </div>
                         <div class="mt-3 sm:mt-0 sm:ml-3">
-                            <a href="chat.php" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-primary bg-green-100 hover:bg-green-200 md:py-4 md:text-lg md:px-10">
+                            <a href="chat_ui.php" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-primary bg-green-100 hover:bg-green-200 md:py-4 md:text-lg md:px-10">
                                 Ask an Expert
                             </a>
                         </div>

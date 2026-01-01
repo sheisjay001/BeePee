@@ -2,7 +2,7 @@
 include __DIR__ . '/../includes/header.php'; 
 
 if (isset($_SESSION['user_id'])) {
-    echo "<script>window.location.href = '/dashboard';</script>";
+    echo "<script>window.location.href = 'tracker_ui.php';</script>";
     exit;
 }
 ?>
@@ -14,7 +14,7 @@ if (isset($_SESSION['user_id'])) {
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600">
             Or
-            <a href="register" class="font-medium text-primary hover:text-secondary">
+            <a href="register_ui.php" class="font-medium text-primary hover:text-secondary">
                 create a new account
             </a>
         </p>
@@ -119,18 +119,6 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         }).showToast();
         btn.disabled = false;
         btn.innerText = originalText;
-    }
-});
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        Toastify({
-            text: 'An error occurred. Please try again.',
-            duration: 3000,
-            gravity: "top",
-            position: "right",
-            backgroundColor: "#EF4444",
-        }).showToast();
     }
 });
 </script>

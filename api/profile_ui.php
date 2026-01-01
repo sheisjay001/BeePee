@@ -2,7 +2,7 @@
 include __DIR__ . '/../includes/header.php'; 
 
 if (!isset($_SESSION['user_id'])) {
-    echo "<script>window.location.href = '/login';</script>";
+    echo "<script>window.location.href = 'login_ui.php';</script>";
     exit;
 }
 ?>
@@ -74,7 +74,7 @@ if (!isset($_SESSION['user_id'])) {
 document.addEventListener('DOMContentLoaded', async function() {
     // Fetch user data
     try {
-        const response = await fetch('api/profile.php');
+        const response = await fetch('profile.php');
         const result = await response.json();
         
         if (result.status === 'success') {
