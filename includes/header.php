@@ -164,7 +164,10 @@
 
     <script>
         // Check for saved theme preference or use system preference
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        // Mobile (sm < 640px) defaults to light mode unless explicitly set
+        const isMobile = window.innerWidth < 640;
+        
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && !isMobile && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
