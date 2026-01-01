@@ -36,6 +36,18 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
+// Password Strength Validation
+if (strlen($password) < 8) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Password must be at least 8 characters long']);
+    exit;
+}
+if (!preg_match('/[A-Za-z]/', $password) || !preg_match('/[0-9]/', $password)) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Password must contain both letters and numbers']);
+    exit;
+}
+
 try {
     // Check if user exists
     $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ? OR username = ?");

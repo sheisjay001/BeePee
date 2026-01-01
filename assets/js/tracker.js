@@ -124,68 +124,64 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (result.status === 'success') {
                 const logs = result.data;
-                
-                // Update Chart
-                chart.data.labels = logs.map(log => log.log_date);
-                chart.data.datasets[0].data = logs.map(log => log.systolic);
-                chart.data.datasets[1].data = logs.map(log => log.diastolic);
-                chart.data.datasets[2].data = logs.map(log => log.blood_sugar);
-                chart.update();
-
-                // Update Table (Reverse order for table: newest first)
-                tableBody.innerHTML = '';
-                [...logs].reverse().forEach(log => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${log.log_date}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${log.systolic ? log.systolic + '/' + log.diastolic : '-'}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${log.blood_sugar || '-'}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${log.weight || '-'}</td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-
-                // Calculate Summary Stats
-                calculateStats(logs);
-
-            } else {
-                console.error('Failed to fetch logs:', result.message);
+                updateChart(logs);
+                updateTable(logs);
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error fetching logs:', error);
         }
     }
 
-    function calculateStats(logs) {
-        if (!logs || logs.length === 0) {
-            document.getElementById('avgSystolic').textContent = '--';
-            document.getElementById('avgDiastolic').textContent = '--';
-            document.getElementById('avgSugar').textContent = '--';
-            document.getElementById('latestWeight').textContent = '--';
+    function updateTable(logs) {
+        tableBody.innerHTML = '';
+        
+        if (logs.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="px-6 py-10 text-center text-gray-500">
+                        <div class="flex flex-col items-center justify-center">
+                            <svg class="h-12 w-12 text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <p class="text-lg font-medium text-gray-900">No logs yet</p>
+                            <p class="text-sm text-gray-500">Start tracking your health by adding a log.</p>
+                        </div>
+                    </td>
+                </tr>
+            `;
             return;
         }
 
-        const validSystolic = logs.filter(l => l.systolic).map(l => parseFloat(l.systolic));
-        const validDiastolic = logs.filter(l => l.diastolic).map(l => parseFloat(l.diastolic));
-        const validSugar = logs.filter(l => l.blood_sugar).map(l => parseFloat(l.blood_sugar));
-        const validWeight = logs.filter(l => l.weight).map(l => parseFloat(l.weight));
+        // Sort logs descending for table
+        const sortedLogs = [...logs].sort((a, b) => new Date(b.log_date) - new Date(a.log_date));
 
-        const avgSys = validSystolic.length ? Math.round(validSystolic.reduce((a, b) => a + b, 0) / validSystolic.length) : '--';
-        const avgDia = validDiastolic.length ? Math.round(validDiastolic.reduce((a, b) => a + b, 0) / validDiastolic.length) : '--';
-        const avgSug = validSugar.length ? Math.round(validSugar.reduce((a, b) => a + b, 0) / validSugar.length) : '--';
-        
-        // Latest weight is the last entry in the sorted (oldest -> newest) logs array that has a weight
-        let latestW = '--';
-        for (let i = logs.length - 1; i >= 0; i--) {
-            if (logs[i].weight) {
-                latestW = logs[i].weight;
-                break;
-            }
+        sortedLogs.forEach(log => {
+            const row = `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${log.log_date}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${log.systolic ? log.systolic + '/' + log.diastolic : '-'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${log.blood_sugar || '-'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${log.weight || '-'}</td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+    }
+
+    function updateChart(logs) {
+        // Sort logs ascending for chart
+        const sortedLogs = [...logs].sort((a, b) => new Date(a.log_date) - new Date(b.log_date));
+
+        chart.data.labels = sortedLogs.map(l => l.log_date);
+        chart.data.datasets[0].data = sortedLogs.map(l => l.systolic);
+        chart.data.datasets[1].data = sortedLogs.map(l => l.diastolic);
+        chart.data.datasets[2].data = sortedLogs.map(l => l.blood_sugar);
+        chart.update();
+
+        // Calculate Averages
+        if (logs.length > 0) {
+             const avgSys = Math.round(logs.reduce((acc, curr) => acc + (parseInt(curr.systolic) || 0), 0) / logs.filter(l => l.systolic).length) || '--';
+             document.getElementById('avgSystolic').innerText = avgSys + ' mmHg';
         }
-
-        document.getElementById('avgSystolic').textContent = avgSys;
-        document.getElementById('avgDiastolic').textContent = avgDia;
-        document.getElementById('avgSugar').textContent = avgSug;
-        document.getElementById('latestWeight').textContent = latestW;
     }
 });

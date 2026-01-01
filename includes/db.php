@@ -57,6 +57,14 @@ try {
     )";
     $pdo->exec($sessionSql);
 
+    // Create login_attempts table for rate limiting
+    $rateLimitSql = "CREATE TABLE IF NOT EXISTS login_attempts (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        ip_address VARCHAR(45) NOT NULL,
+        attempt_time INT NOT NULL
+    )";
+    $pdo->exec($rateLimitSql);
+
     // Attempt to add user_id column if it doesn't exist (for migration)
     try {
         $pdo->exec("ALTER TABLE health_logs ADD COLUMN user_id INT AFTER id");
