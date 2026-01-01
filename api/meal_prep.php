@@ -36,7 +36,7 @@ if (!isset($_SESSION['user_id'])) {
                 <label for="regionFilter" class="text-sm font-medium text-gray-700">Region:</label>
                 <select id="regionFilter" onchange="updateFilters()" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md border">
                     <option value="all">All Regions</option>
-                    <option value="africa">Africa</option>
+                    <option value="africa">Africa (including Nigeria)</option>
                     <option value="asia">Asia</option>
                     <option value="europe">Europe / Mediterranean</option>
                     <option value="americas">Americas</option>

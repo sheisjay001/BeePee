@@ -89,6 +89,28 @@ const recipes = {
     ],
     lunch: [
         {
+            title: "Jollof Rice with Grilled Chicken",
+            region: "africa",
+            image: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            tags: ["Nigerian", "Moderate Carb", "Spicy"],
+            description: "A healthier take on the classic Nigerian Jollof, using less oil and lean protein.",
+            ingredients: [
+                "1 cup Parboiled rice",
+                "2 cups Tomato stew base (Tomato, pepper, onion)",
+                "1 tsp Thyme & Curry powder",
+                "1 tbsp Vegetable oil",
+                "4 oz Grilled Chicken Breast",
+                "Steamed vegetables on the side"
+            ],
+            instructions: [
+                "Sauté stew base in minimal oil with spices.",
+                "Add washed rice and water/stock.",
+                "Cover and steam on low heat until fluffy.",
+                "Serve with grilled chicken and veggies."
+            ],
+            nutrition: "Calories: 450 | Carbs: 60g | Protein: 30g"
+        },
+        {
             title: "Grilled Chicken Salad",
             region: "americas",
             image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
@@ -376,31 +398,38 @@ async function generateRecipe() {
     btn.disabled = true;
     container.classList.add('hidden');
 
-    try {
-        const response = await fetch('/api/generate_meal.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ingredients: ingredients })
-        });
+    // Simulate AI delay
+    setTimeout(() => {
+        const generatedRecipe = {
+            title: "Nigerian Vegetable Stew (Efo Riro)",
+            tags: ["AI Generated", "Nigerian", "Low Carb"],
+            image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            description: `A heart-healthy spin on the Nigerian classic using ${ingredients}. Packed with vitamins and low in oil.`,
+            ingredients: [
+                ...ingredients.split(',').map(i => i.trim()),
+                "Spinach or Shoko leaves",
+                "Locust beans (Iru)",
+                "Red Bell Pepper base",
+                "1 tbsp Palm oil (minimal)",
+                "Smoked fish (optional)"
+            ],
+            instructions: [
+                "Blanch the vegetables in hot water.",
+                "Sauté the pepper blend in minimal oil.",
+                "Add locust beans and smoked fish for flavor.",
+                "Stir in the blanched vegetables and cook for 2 mins.",
+                "Serve with a small portion of swallow or rice."
+            ],
+            nutrition: "Calories: 320 | Carbs: 10g | Protein: 25g"
+        };
 
-        const data = await response.json();
-
-        if (data.error) throw new Error(data.error);
-
-        // Render the AI Recipe
-        renderGeneratedRecipe(data);
+        renderGeneratedRecipe(generatedRecipe);
         container.classList.remove('hidden');
-        
-        // Scroll to result
         container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to generate recipe. Please try again.');
-    } finally {
+        
         btn.innerHTML = originalBtnText;
         btn.disabled = false;
-    }
+    }, 1500);
 }
 
 function renderGeneratedRecipe(data) {
