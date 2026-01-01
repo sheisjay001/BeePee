@@ -68,7 +68,7 @@ const recipes = {
         {
             title: "Moi Moi (Steamed Bean Pudding)",
             region: "africa",
-            image: "https://images.unsplash.com/photo-1628833989397-5c5f47053075?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", 
+            image: "https://images.unsplash.com/photo-1543353071-873f17a7a088?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", 
             tags: ["High Protein", "Steamed", "Nigerian"],
             description: "A nutrient-dense steamed bean pudding, rich in protein and heart-healthy.",
             ingredients: [
@@ -90,7 +90,7 @@ const recipes = {
         {
             title: "Congee with Lean Chicken",
             region: "asia",
-            image: "https://images.unsplash.com/photo-1626809804153-29a3a9106093?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            image: "https://images.unsplash.com/photo-1511910849309-0dffb87d2dbd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
             tags: ["Comfort Food", "Low Fat", "Asian"],
             description: "A soothing rice porridge, easy on the stomach and warm.",
             ingredients: [
@@ -134,7 +134,7 @@ const recipes = {
         {
             title: "Miso Soup with Tofu & Wakame",
             region: "asia",
-            image: "https://images.unsplash.com/photo-1594982361625-f77d33939643?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            image: "https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
             tags: ["Low Calorie", "Probiotic", "Japanese"],
             description: "A light and healthy traditional Japanese soup.",
             ingredients: [
