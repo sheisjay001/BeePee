@@ -56,7 +56,9 @@
                         </span>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="index.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Home</a>
+                        <?php if (!isset($_SESSION['user_id'])): ?>
+                            <a href="index.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Home</a>
+                        <?php endif; ?>
                         <a href="dashboard" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Dashboard</a>
                         <a href="meal_prep.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Meal Prep</a>
                         <a href="chat.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Ask AI</a>
@@ -84,7 +86,9 @@
         </div>
         <div class="sm:hidden hidden bg-primary-800" id="mobile-menu">
             <div class="pt-2 pb-3 space-y-1">
-                <a href="index.php" class="bg-primary-900 border-accent text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <?php if (!isset($_SESSION['user_id'])): ?>
+                    <a href="index.php" class="bg-primary-900 border-accent text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <?php endif; ?>
                 <a href="dashboard" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Dashboard</a>
                 <a href="meal_prep.php" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Meal Prep</a>
                 <a href="chat.php" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Ask AI</a>
