@@ -66,6 +66,28 @@ const recipes = {
             nutrition: "Calories: 280 | Carbs: 40g | Protein: 14g"
         },
         {
+            title: "Moi Moi (Steamed Bean Pudding)",
+            region: "africa",
+            image: "https://images.unsplash.com/photo-1628833989397-5c5f47053075?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", 
+            tags: ["High Protein", "Steamed", "Nigerian"],
+            description: "A nutrient-dense steamed bean pudding, rich in protein and heart-healthy.",
+            ingredients: [
+                "2 cups Black-eyed peas (peeled)",
+                "1 Red bell pepper (Tatashe)",
+                "1 Onion",
+                "1 tbsp Ground crayfish (optional)",
+                "1 tbsp Olive oil",
+                "Smoked fish or boiled egg"
+            ],
+            instructions: [
+                "Blend peeled beans with peppers and onions until smooth.",
+                "Stir in oil, crayfish, and seasoning.",
+                "Pour into molds or leaves (add egg/fish if using).",
+                "Steam for 40-50 minutes until set."
+            ],
+            nutrition: "Calories: 300 | Carbs: 20g | Protein: 15g"
+        },
+        {
             title: "Congee with Lean Chicken",
             region: "asia",
             image: "https://images.unsplash.com/photo-1626809804153-29a3a9106093?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
