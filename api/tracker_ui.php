@@ -14,95 +14,105 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
     <!-- Summary Cards -->
-    <div id="statsCards" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 mb-8">
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+    <div id="statsCards" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 mb-8">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl transition-shadow duration-300 hover:shadow-xl glass">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-6 w-6 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Avg Systolic BP</dt>
-                            <dd class="text-lg font-medium text-gray-900" id="avgSystolic">--</dd>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Avg Systolic BP</dt>
+                            <dd class="text-lg font-medium text-gray-900 dark:text-white" id="avgSystolic">
+                                <div class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-16 animate-pulse"></div>
+                            </dd>
                         </dl>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl transition-shadow duration-300 hover:shadow-xl glass">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-6 w-6 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Avg Diastolic BP</dt>
-                            <dd class="text-lg font-medium text-gray-900" id="avgDiastolic">--</dd>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Avg Diastolic BP</dt>
+                            <dd class="text-lg font-medium text-gray-900 dark:text-white" id="avgDiastolic">
+                                <div class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-16 animate-pulse"></div>
+                            </dd>
                         </dl>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl transition-shadow duration-300 hover:shadow-xl glass">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-6 w-6 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Avg Blood Sugar</dt>
-                            <dd class="text-lg font-medium text-gray-900" id="avgSugar">--</dd>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Avg Blood Sugar</dt>
+                            <dd class="text-lg font-medium text-gray-900 dark:text-white" id="avgSugar">
+                                <div class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-16 animate-pulse"></div>
+                            </dd>
                         </dl>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl transition-shadow duration-300 hover:shadow-xl glass">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-6 w-6 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
                         </svg>
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Latest Weight</dt>
-                            <dd class="text-lg font-medium text-gray-900" id="latestWeight">--</dd>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Latest Weight</dt>
+                            <dd class="text-lg font-medium text-gray-900 dark:text-white" id="latestWeight">
+                                <div class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-16 animate-pulse"></div>
+                            </dd>
                         </dl>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl transition-shadow duration-300 hover:shadow-xl glass">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-6 w-6 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" />
                         </svg>
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">BMI</dt>
-                            <dd class="text-lg font-medium text-gray-900" id="bmiDisplay">--</dd>
-                            <dd class="text-xs text-gray-500" id="bmiCategory"></dd>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">BMI</dt>
+                            <dd class="text-lg font-medium text-gray-900 dark:text-white" id="bmiDisplay">
+                                <div class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-16 animate-pulse"></div>
+                            </dd>
+                            <dd class="text-xs text-gray-500 dark:text-gray-400" id="bmiCategory"></dd>
                         </dl>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Streak Card -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl transition-shadow duration-300 hover:shadow-xl glass">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -113,9 +123,9 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Current Streak</dt>
-                            <dd class="text-lg font-medium text-gray-900" id="streakDisplay">0 days</dd>
-                            <dd class="text-xs text-gray-500">Keep it up!</dd>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Current Streak</dt>
+                            <dd class="text-lg font-medium text-gray-900 dark:text-white" id="streakDisplay">0 days</dd>
+                            <dd class="text-xs text-gray-500 dark:text-gray-400">Keep it up!</dd>
                         </dl>
                     </div>
                 </div>
@@ -160,7 +170,23 @@ if (!isset($_SESSION['user_id'])) {
                             </tr>
                         </thead>
                         <tbody id="logsTableBody" class="bg-white divide-y divide-gray-200">
-                            <!-- Logs will be inserted here -->
+                            <!-- Skeleton Rows -->
+                            <?php for($i=0; $i<5; $i++): ?>
+                            <tr class="animate-pulse">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="h-4 bg-gray-200 rounded w-24"></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="h-4 bg-gray-200 rounded w-16"></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="h-4 bg-gray-200 rounded w-16"></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="h-4 bg-gray-200 rounded w-16"></div>
+                                </td>
+                            </tr>
+                            <?php endfor; ?>
                         </tbody>
                     </table>
                 </div>

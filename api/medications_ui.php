@@ -29,10 +29,10 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
     <!-- Medications List -->
-    <div class="bg-white shadow overflow-hidden sm:rounded-md">
-        <ul id="medicationList" class="divide-y divide-gray-200">
+    <div class="bg-white/80 dark:bg-gray-800/80 shadow overflow-hidden sm:rounded-md glass backdrop-blur-md">
+        <ul id="medicationList" class="divide-y divide-gray-200 dark:divide-gray-700">
             <!-- Items injected via JS -->
-            <li class="px-4 py-4 sm:px-6 text-center text-gray-500">Loading medications...</li>
+            <li class="px-4 py-4 sm:px-6 text-center text-gray-500 dark:text-gray-400">Loading medications...</li>
         </ul>
     </div>
 </div>

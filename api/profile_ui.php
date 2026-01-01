@@ -89,7 +89,10 @@ if (!isset($_SESSION['user_id'])) {
         <div class="shadow sm:rounded-md sm:overflow-hidden">
             <div class="px-4 py-5 bg-white dark:bg-gray-800 sm:p-6">
                 <div id="2faStatusSection">
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Loading 2FA status...</p>
+                    <div class="animate-pulse space-y-4">
+                        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                        <div class="h-10 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
+                    </div>
                 </div>
                 
                 <!-- Setup Area (Hidden by default) -->
@@ -133,11 +136,21 @@ if (!isset($_SESSION['user_id'])) {
             </div>
         </div>
         <div class="mt-5 md:mt-0 md:col-span-2">
-            <div class="shadow overflow-hidden sm:rounded-md">
-                 <div class="bg-white dark:bg-gray-800 px-4 py-5 sm:p-6">
+            <div class="shadow overflow-hidden sm:rounded-md glass">
+                 <div class="bg-white/80 dark:bg-gray-800/80 px-4 py-5 sm:p-6 backdrop-blur-sm">
                      <div class="flow-root">
                          <ul id="auditLogsList" class="-my-5 divide-y divide-gray-200 dark:divide-gray-700">
-                             <li class="py-4 text-center text-gray-500">Loading...</li>
+                             <?php for($i=0; $i<3; $i++): ?>
+                             <li class="py-4 animate-pulse">
+                                <div class="flex items-center space-x-4">
+                                     <div class="flex-1 min-w-0 space-y-2">
+                                         <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+                                         <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+                                     </div>
+                                     <div class="w-16 h-3 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                                </div>
+                             </li>
+                             <?php endfor; ?>
                          </ul>
                      </div>
                  </div>

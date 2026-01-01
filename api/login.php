@@ -79,6 +79,31 @@ try {
         // Log failed attempt
         $pdo->prepare("INSERT INTO login_attempts (ip_address, attempt_time) VALUES (?, ?)")->execute([$ip_address, time()]);
 
+        // Security: Log to audit_logs if user exists (so they know someone tried to login)
+        if ($user) {
+             // Update User Lockout Counters
+             $new_failures = ($user['failed_login_attempts'] ?? 0) + 1;
+             $lockout_until = null;
+             $lockout_msg = "";
+             
+             // Lockout logic: Lock for 15 mins after every 5th attempt
+             if ($new_failures % 5 == 0) {
+                 $lockout_until = date('Y-m-d H:i:s', time() + (15 * 60)); // 15 minutes
+                 $lockout_msg = " Account locked for 15 minutes.";
+             }
+             
+             $pdo->prepare("UPDATE users SET failed_login_attempts = ?, lockout_until = ? WHERE id = ?")
+                 ->execute([$new_failures, $lockout_until, $user['id']]);
+
+             logActivity($pdo, $user['id'], 'login_failed', "Failed login attempt from IP: $ip_address.$lockout_msg");
+             
+             if ($lockout_until) {
+                 http_response_code(429);
+                 echo json_encode(['status' => 'error', 'message' => "Account locked due to too many failed attempts. Try again in 15 minutes."]);
+                 exit;
+             }
+        }
+
         http_response_code(401);
         echo json_encode(['status' => 'error', 'message' => 'Invalid email or password']);
     }

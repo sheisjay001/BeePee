@@ -3,42 +3,36 @@
 require_once __DIR__ . '/../includes/config.php';
 require_once __DIR__ . '/../includes/db.php';
 
+// Ensure user is logged in
 if (!isset($_SESSION['user_id'])) {
-    http_response_code(401);
+    http_response_code(403);
     die('Unauthorized');
 }
 
 $userId = $_SESSION['user_id'];
-$filename = "beepee_health_logs_" . date('Y-m-d') . ".csv";
 
-header('Content-Type: text/csv');
-header('Content-Disposition: attachment; filename="' . $filename . '"');
+// Fetch logs
+try {
+    $stmt = $pdo->prepare("SELECT log_date, systolic, diastolic, blood_sugar, weight, notes, created_at FROM health_logs WHERE user_id = ? ORDER BY log_date DESC, created_at DESC");
+    $stmt->execute([$userId]);
+    $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    die("Error fetching data");
+}
 
+// Set headers for CSV download
+header('Content-Type: text/csv; charset=utf-8');
+header('Content-Disposition: attachment; filename=health_logs_' . date('Y-m-d') . '.csv');
+
+// Create file pointer connected to output stream
 $output = fopen('php://output', 'w');
 
-// Add BOM for Excel compatibility
-fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+// Output column headings
+fputcsv($output, array('Date', 'Systolic BP (mmHg)', 'Diastolic BP (mmHg)', 'Blood Sugar (mg/dL)', 'Weight (kg)', 'Notes', 'Created At'));
 
-// Header row
-fputcsv($output, ['Date', 'Systolic (mmHg)', 'Diastolic (mmHg)', 'Blood Sugar (mg/dL)', 'Weight (kg)', 'Notes']);
-
-try {
-    $stmt = $pdo->prepare("SELECT log_date, systolic, diastolic, blood_sugar, weight, notes FROM health_logs WHERE user_id = ? ORDER BY log_date DESC");
-    $stmt->execute([$userId]);
-    
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        fputcsv($output, [
-            $row['log_date'],
-            $row['systolic'] ?: '-',
-            $row['diastolic'] ?: '-',
-            $row['blood_sugar'] ?: '-',
-            $row['weight'] ?: '-',
-            $row['notes'] ?: ''
-        ]);
-    }
-} catch (Exception $e) {
-    // In a CSV download, we can't easily return JSON error, so we might just log it or output error in file
-    error_log($e->getMessage());
+// Loop over the rows, outputting them
+foreach ($logs as $row) {
+    fputcsv($output, $row);
 }
 
 fclose($output);

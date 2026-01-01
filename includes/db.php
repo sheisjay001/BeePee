@@ -45,6 +45,8 @@ try {
         username VARCHAR(50) NOT NULL UNIQUE,
         email VARCHAR(100) NOT NULL UNIQUE,
         password_hash VARCHAR(255) NOT NULL,
+        failed_login_attempts INT DEFAULT 0,
+        lockout_until DATETIME DEFAULT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )";
     $pdo->exec($userSql);
@@ -70,6 +72,18 @@ try {
         $pdo->exec("ALTER TABLE health_logs ADD COLUMN user_id INT AFTER id");
     } catch (Exception $e) {
         // Column likely already exists, ignore
+    }
+
+    // Attempt to add account lockout columns to users table
+    try {
+        $pdo->exec("ALTER TABLE users ADD COLUMN failed_login_attempts INT DEFAULT 0");
+    } catch (Exception $e) {
+        // Column likely already exists
+    }
+    try {
+        $pdo->exec("ALTER TABLE users ADD COLUMN lockout_until DATETIME DEFAULT NULL");
+    } catch (Exception $e) {
+        // Column likely already exists
     }
 
 } catch (PDOException $e) {

@@ -18,7 +18,7 @@ if (isset($_SESSION['user_id'])) {
     </div>
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div class="bg-white/80 dark:bg-gray-800/80 py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 glass backdrop-blur-md">
             <form id="forgotPasswordForm" class="space-y-6">
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">

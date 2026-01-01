@@ -21,7 +21,7 @@ if (isset($_SESSION['user_id'])) {
     </div>
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div class="bg-white/80 dark:bg-gray-800/80 py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 glass backdrop-blur-md">
             <!-- Login Form -->
             <form id="loginForm" class="space-y-6">
                 <div>
@@ -67,15 +67,15 @@ if (isset($_SESSION['user_id'])) {
             <!-- 2FA Form (Hidden by default) -->
             <form id="twoFactorForm" class="space-y-6 hidden">
                 <div class="text-center">
-                    <h3 class="text-lg font-medium text-gray-900">Two-Factor Authentication</h3>
-                    <p class="mt-1 text-sm text-gray-500">Enter the 6-digit code from your authenticator app.</p>
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">Two-Factor Authentication</h3>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Enter the 6-digit code from your authenticator app.</p>
                 </div>
                 <div>
-                    <label for="2fa_code" class="block text-sm font-medium text-gray-700">
+                    <label for="2fa_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Authentication Code
                     </label>
                     <div class="mt-1">
-                        <input id="2fa_code" name="code" type="text" pattern="[0-9]*" inputmode="numeric" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm text-center tracking-widest text-lg">
+                        <input id="2fa_code" name="code" type="text" pattern="[0-9]*" inputmode="numeric" required class="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm text-center tracking-widest text-lg">
                     </div>
                 </div>
 
