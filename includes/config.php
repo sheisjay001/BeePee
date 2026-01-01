@@ -86,6 +86,8 @@ function get_env_var($key) {
     return false;
 }
 
+require_once __DIR__ . '/csrf.php';
+
 // Check for local config override (ignored by git)
 if (file_exists(__DIR__ . '/config.local.php')) {
     include_once __DIR__ . '/config.local.php';

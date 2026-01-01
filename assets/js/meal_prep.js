@@ -407,7 +407,13 @@ async function generateRecipe() {
     const ingredients = input.value.trim();
 
     if (!ingredients) {
-        alert('Please enter some ingredients first!');
+        Toastify({
+            text: "Please enter some ingredients first!",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#EF4444",
+        }).showToast();
         return;
     }
 

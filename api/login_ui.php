@@ -74,12 +74,14 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
     const messageEl = document.getElementById('message');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     try {
         const response = await fetch('/api/login.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': csrfToken
             },
             body: JSON.stringify(data)
         });
@@ -89,13 +91,23 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         if (response.ok) {
             window.location.href = '/dashboard';
         } else {
-            messageEl.textContent = result.message || 'Login failed';
-            messageEl.classList.remove('hidden');
+            Toastify({
+                text: result.message || 'Login failed',
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#EF4444",
+            }).showToast();
         }
     } catch (error) {
         console.error('Error:', error);
-        messageEl.textContent = 'An error occurred. Please try again.';
-        messageEl.classList.remove('hidden');
+        Toastify({
+            text: 'An error occurred. Please try again.',
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#EF4444",
+        }).showToast();
     }
 });
 </script>

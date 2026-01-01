@@ -70,12 +70,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         try {
             const response = await fetch('api/tracker.php', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': csrfToken
                 },
                 body: JSON.stringify(data)
             });
@@ -83,16 +85,35 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
 
             if (result.status === 'success') {
-                alert('Log saved successfully!');
+                Toastify({
+                    text: "Log saved successfully!",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "#059669",
+                }).showToast();
+                
                 form.reset();
                 document.getElementById('date').valueAsDate = new Date();
                 fetchLogs();
             } else {
-                alert('Error: ' + result.message);
+                Toastify({
+                    text: result.message || "Error saving log",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "#EF4444",
+                }).showToast();
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while saving the log.');
+            Toastify({
+                text: "An error occurred while saving the log.",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#EF4444",
+            }).showToast();
         }
     });
 

@@ -68,12 +68,14 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
     const messageEl = document.getElementById('message');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     try {
         const response = await fetch('/api/register.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': csrfToken
             },
             body: JSON.stringify(data)
         });
@@ -81,15 +83,32 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         const result = await response.json();
 
         if (response.ok) {
-            window.location.href = '/dashboard';
+            Toastify({
+                text: "Registration successful! Redirecting...",
+                duration: 2000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#059669",
+            }).showToast();
+            setTimeout(() => window.location.href = '/dashboard', 2000);
         } else {
-            messageEl.textContent = result.message || 'Registration failed';
-            messageEl.classList.remove('hidden');
+            Toastify({
+                text: result.message || 'Registration failed',
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#EF4444",
+            }).showToast();
         }
     } catch (error) {
         console.error('Error:', error);
-        messageEl.textContent = 'An error occurred. Please try again.';
-        messageEl.classList.remove('hidden');
+        Toastify({
+            text: 'An error occurred. Please try again.',
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#EF4444",
+        }).showToast();
     }
 });
 </script>
