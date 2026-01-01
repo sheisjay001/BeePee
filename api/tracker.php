@@ -18,7 +18,9 @@ $method = $_SERVER['REQUEST_METHOD'];
 if ($method === 'GET') {
     // Fetch logs for user
     try {
-        $stmt = $pdo->prepare("SELECT * FROM health_logs WHERE user_id = ? ORDER BY log_date ASC, created_at ASC");
+        // Optimization: Limit to last 365 entries to prevent massive payloads
+        // Frontend sorts them as needed (Chart ASC, Table DESC)
+        $stmt = $pdo->prepare("SELECT * FROM health_logs WHERE user_id = ? ORDER BY log_date DESC, created_at DESC LIMIT 365");
         $stmt->execute([$userId]);
         $logs = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch Assoc for cleaner JSON
 

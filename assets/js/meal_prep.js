@@ -25,7 +25,7 @@ const recipes = {
         {
             title: "Spinach & Mushroom Egg White Omelet",
             region: "europe",
-            image: "https://images.unsplash.com/photo-1525351484163-7529414395d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            image: "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
             tags: ["High Protein", "Low Carb", "Mediterranean"],
             description: "A fluffy, protein-packed breakfast that keeps blood sugar stable.",
             ingredients: [
@@ -134,7 +134,7 @@ const recipes = {
         {
             title: "Miso Soup with Tofu & Wakame",
             region: "asia",
-            image: "https://images.unsplash.com/photo-1547592166-23acbe346499?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            image: "https://images.unsplash.com/photo-1594982361625-f77d33939643?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
             tags: ["Low Calorie", "Probiotic", "Japanese"],
             description: "A light and healthy traditional Japanese soup.",
             ingredients: [
