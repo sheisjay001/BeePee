@@ -107,6 +107,50 @@ const recipes = {
                 "Garnish with green onions."
             ],
             nutrition: "Calories: 300 | Carbs: 50g | Protein: 20g"
+        },
+        {
+            title: "Shakshuka (Poached Eggs in Tomato Sauce)",
+            region: "africa",
+            image: "https://images.unsplash.com/photo-1590412200988-a436970781fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            tags: ["Low Carb", "High Protein", "North African"],
+            description: "A spicy, savory dish of eggs poached in a sauce of tomatoes, chili peppers, and garlic.",
+            ingredients: [
+                "4 Eggs",
+                "1 can Diced tomatoes",
+                "1 Onion, chopped",
+                "1 Red bell pepper, chopped",
+                "1 tsp Cumin & Paprika",
+                "Fresh cilantro"
+            ],
+            instructions: [
+                "Sauté onion and bell pepper until soft.",
+                "Add tomatoes and spices; simmer for 10 mins.",
+                "Make wells in the sauce and crack eggs into them.",
+                "Cover and cook until eggs are set.",
+                "Garnish with cilantro."
+            ],
+            nutrition: "Calories: 250 | Carbs: 15g | Protein: 18g"
+        },
+        {
+            title: "Miso Soup with Tofu & Wakame",
+            region: "asia",
+            image: "https://images.unsplash.com/photo-1547592166-23acbe346499?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            tags: ["Low Calorie", "Probiotic", "Japanese"],
+            description: "A light and healthy traditional Japanese soup.",
+            ingredients: [
+                "4 cups Dashi stock or vegetable broth",
+                "3 tbsp Miso paste",
+                "1 block Silken tofu, cubed",
+                "1 tbsp Dried wakame (seaweed)",
+                "Green onions, sliced"
+            ],
+            instructions: [
+                "Heat stock until simmering.",
+                "Add tofu and wakame; cook for 2 mins.",
+                "Remove from heat and whisk in miso paste (do not boil miso).",
+                "Top with green onions."
+            ],
+            nutrition: "Calories: 80 | Carbs: 8g | Protein: 6g"
         }
     ],
     lunch: [
@@ -212,6 +256,47 @@ const recipes = {
                 "Roll tightly and serve with peanut dip."
             ],
             nutrition: "Calories: 200 | Carbs: 35g | Protein: 12g"
+        },
+        {
+            title: "Greek Salad with Grilled Chicken",
+            region: "europe",
+            image: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            tags: ["Low Carb", "Keto Friendly", "Mediterranean"],
+            description: "A fresh and crunchy salad with grilled chicken for extra protein.",
+            ingredients: [
+                "1 Cucumber, diced",
+                "2 Tomatoes, diced",
+                "1/2 Red onion, sliced",
+                "1/4 cup Feta cheese, crumbled",
+                "4 oz Grilled Chicken Breast",
+                "Kalamata olives"
+            ],
+            instructions: [
+                "Combine vegetables and olives in a bowl.",
+                "Top with grilled chicken and feta cheese.",
+                "Drizzle with olive oil and oregano."
+            ],
+            nutrition: "Calories: 380 | Carbs: 12g | Protein: 35g"
+        },
+        {
+            title: "Black Bean & Corn Salad",
+            region: "americas",
+            image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            tags: ["High Fiber", "Vegan", "Mexican"],
+            description: "A zesty and colorful salad perfect for a light lunch.",
+            ingredients: [
+                "1 can Black beans, rinsed",
+                "1 cup Corn kernels",
+                "1 Red bell pepper, diced",
+                "1/4 cup Cilantro, chopped",
+                "Lime juice & Olive oil"
+            ],
+            instructions: [
+                "Mix black beans, corn, and bell pepper.",
+                "Stir in cilantro, lime juice, and olive oil.",
+                "Season with a pinch of salt and chili powder."
+            ],
+            nutrition: "Calories: 300 | Carbs: 45g | Protein: 12g"
         }
     ],
     dinner: [
@@ -295,6 +380,47 @@ const recipes = {
                 "Toss everything with soy sauce and sesame oil."
             ],
             nutrition: "Calories: 260 | Carbs: 15g | Protein: 22g"
+        },
+        {
+            title: "Chicken Stir-Fry with Cashews",
+            region: "asia",
+            image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            tags: ["High Protein", "Quick", "Asian"],
+            description: "A crunchy and savory stir-fry loaded with lean protein and healthy fats.",
+            ingredients: [
+                "1 Chicken breast, cubed",
+                "1/2 cup Cashews, roasted",
+                "1 Bell pepper, sliced",
+                "1 Zucchini, sliced",
+                "1 tbsp Soy sauce & Ginger"
+            ],
+            instructions: [
+                "Stir-fry chicken until cooked through.",
+                "Add vegetables and cook until crisp-tender.",
+                "Stir in cashews and sauce; cook for 1 min."
+            ],
+            nutrition: "Calories: 350 | Carbs: 12g | Protein: 30g"
+        },
+        {
+            title: "Grilled Fish with Plantains",
+            region: "africa",
+            image: "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            tags: ["High Protein", "Gluten Free", "West African"],
+            description: "Fresh grilled fish served with sweet roasted plantains.",
+            ingredients: [
+                "1 Whole Tilapia or Snapper",
+                "1 Ripe Plantain, sliced",
+                "1 tbsp Suya spice (or paprika/cayenne)",
+                "1 tbsp Vegetable oil",
+                "Onions & Tomatoes for garnish"
+            ],
+            instructions: [
+                "Rub fish with spices and oil.",
+                "Grill fish for 7-10 mins per side.",
+                "Roast or air-fry plantain slices until golden.",
+                "Serve together with fresh onion slices."
+            ],
+            nutrition: "Calories: 400 | Carbs: 45g | Protein: 35g"
         }
     ]
 };
