@@ -14,7 +14,7 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
     <!-- Summary Cards -->
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 mb-8">
+    <div id="statsCards" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 mb-8">
         <div class="bg-white overflow-hidden shadow rounded-lg">
             <div class="p-5">
                 <div class="flex items-center">
@@ -221,6 +221,16 @@ if (!isset($_SESSION['user_id'])) {
             </div>
             
             <!-- Quick Links / Tips -->
+            <div class="mt-6 bg-white rounded-lg shadow border border-gray-200">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h4 class="text-sm font-bold text-gray-800">Today's Medications</h4>
+                    <a href="medications_ui.php" class="text-xs text-primary hover:text-secondary font-medium">Manage</a>
+                </div>
+                <ul id="dashboardMedList" class="divide-y divide-gray-200 max-h-60 overflow-y-auto">
+                    <li class="p-4 text-center text-xs text-gray-500">Loading...</li>
+                </ul>
+            </div>
+
             <div class="mt-6 bg-green-50 rounded-lg p-4 border border-green-100">
                 <h4 class="text-sm font-bold text-green-800 mb-2">Did you know?</h4>
                 <p class="text-sm text-green-700">
@@ -236,5 +246,6 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 </div>
 
+<script src="../assets/js/tour.js"></script>
 <script src="../assets/js/tracker.js"></script>
 <?php include __DIR__ . '/../includes/footer.php'; ?>

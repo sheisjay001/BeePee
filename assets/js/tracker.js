@@ -68,7 +68,78 @@ document.addEventListener('DOMContentLoaded', function() {
     async function init() {
         await fetchProfile();
         await fetchLogs();
+        await fetchDashboardMeds();
     }
+    
+    // Fetch Dashboard Meds
+    async function fetchDashboardMeds() {
+        const list = document.getElementById('dashboardMedList');
+        if (!list) return;
+        
+        try {
+            const response = await fetch('api/medications.php');
+            const result = await response.json();
+            
+            if (result.status === 'success') {
+                const meds = result.data;
+                list.innerHTML = '';
+                
+                if (meds.length === 0) {
+                    list.innerHTML = `<li class="p-4 text-center text-xs text-gray-500">
+                        No meds added. <a href="medications_ui.php" class="text-primary hover:underline">Add one?</a>
+                    </li>`;
+                    return;
+                }
+                
+                meds.forEach(med => {
+                    const isTaken = med.taken_today > 0;
+                    const timeDisplay = med.schedule_time ? new Date('1970-01-01T' + med.schedule_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '';
+                    
+                    list.innerHTML += `
+                        <li class="p-3 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center">
+                                <button onclick="toggleDashboardMed(${med.id})" class="h-6 w-6 rounded-full border flex items-center justify-center transition-colors ${isTaken ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300 text-transparent hover:border-primary'}">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </button>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium ${isTaken ? 'text-gray-400 line-through' : 'text-gray-900'}">${med.name}</p>
+                                    ${timeDisplay ? `<p class="text-xs text-gray-500">${timeDisplay}</p>` : ''}
+                                </div>
+                            </div>
+                        </li>
+                    `;
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching meds:', error);
+            list.innerHTML = '<li class="p-4 text-center text-xs text-red-500">Error loading meds</li>';
+        }
+    }
+    
+    // Make toggle function global so HTML can access it
+    window.toggleDashboardMed = async function(id) {
+        try {
+            const response = await fetch('api/medications.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'toggle', id })
+            });
+            
+            const result = await response.json();
+            if (result.status === 'success') {
+                fetchDashboardMeds(); // Refresh list
+                Toastify({ 
+                    text: result.message, 
+                    backgroundColor: result.message.includes('not') ? "#6B7280" : "#059669",
+                    duration: 2000
+                }).showToast();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     async function fetchProfile() {
         try {
