@@ -22,6 +22,7 @@ if (isset($_SESSION['user_id'])) {
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <!-- Login Form -->
             <form id="loginForm" class="space-y-6">
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">
@@ -60,6 +61,31 @@ if (isset($_SESSION['user_id'])) {
                     <button type="submit" id="loginBtn" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed">
                         Sign in
                     </button>
+                </div>
+            </form>
+
+            <!-- 2FA Form (Hidden by default) -->
+            <form id="twoFactorForm" class="space-y-6 hidden">
+                <div class="text-center">
+                    <h3 class="text-lg font-medium text-gray-900">Two-Factor Authentication</h3>
+                    <p class="mt-1 text-sm text-gray-500">Enter the 6-digit code from your authenticator app.</p>
+                </div>
+                <div>
+                    <label for="2fa_code" class="block text-sm font-medium text-gray-700">
+                        Authentication Code
+                    </label>
+                    <div class="mt-1">
+                        <input id="2fa_code" name="code" type="text" pattern="[0-9]*" inputmode="numeric" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm text-center tracking-widest text-lg">
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" id="verify2faBtn" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed">
+                        Verify Code
+                    </button>
+                </div>
+                <div class="text-center">
+                    <button type="button" id="cancel2faBtn" class="text-sm text-gray-500 hover:text-gray-700">Cancel</button>
                 </div>
             </form>
             
@@ -108,8 +134,13 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 
         const result = await response.json();
 
-        if (response.ok) {
+        if (result.status === 'success') {
             window.location.href = 'tracker_ui.php';
+        } else if (result.status === '2fa_required') {
+            // Show 2FA Form
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('twoFactorForm').classList.remove('hidden');
+            document.getElementById('2fa_code').focus();
         } else {
             Toastify({
                 text: result.message || 'Login failed',
@@ -133,6 +164,56 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         btn.disabled = false;
         btn.innerText = originalText;
     }
+});
+
+document.getElementById('twoFactorForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('verify2faBtn');
+    const originalText = btn.innerText;
+    
+    btn.disabled = true;
+    btn.innerText = 'Verifying...';
+    
+    const code = document.getElementById('2fa_code').value;
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    try {
+        const response = await fetch('login_2fa.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': csrfToken
+            },
+            body: JSON.stringify({code})
+        });
+        const result = await response.json();
+        
+        if (result.status === 'success') {
+            window.location.href = 'tracker_ui.php';
+        } else {
+            Toastify({
+                text: result.message || 'Invalid Code',
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#EF4444",
+            }).showToast();
+            btn.disabled = false;
+            btn.innerText = originalText;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        btn.disabled = false;
+        btn.innerText = originalText;
+    }
+});
+
+document.getElementById('cancel2faBtn').addEventListener('click', function() {
+    document.getElementById('twoFactorForm').classList.add('hidden');
+    document.getElementById('loginForm').classList.remove('hidden');
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = false;
+    btn.innerText = 'Sign in';
 });
 </script>
 

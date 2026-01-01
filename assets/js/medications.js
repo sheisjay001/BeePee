@@ -180,8 +180,12 @@ function checkReminders() {
             
             // Check if it's time (within last minute)
             if (currentHour === schedHour && currentMinute === schedMinute) {
-                new Notification(`Time to take ${med.name}`, {
-                    body: `Don't forget your ${med.dosage || ''} dose!`,
+                const isMed = med.type !== 'measurement' && med.type !== 'other';
+                const title = isMed ? `Time to take ${med.name}` : `Time to check ${med.name}`;
+                const body = isMed ? `Don't forget your ${med.dosage || ''} dose!` : `It's time for your scheduled check.`;
+
+                new Notification(title, {
+                    body: body,
                     icon: '/assets/icon.png' // Placeholder
                 });
             }

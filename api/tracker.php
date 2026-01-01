@@ -81,7 +81,10 @@ if ($method === 'GET') {
             ':notes' => $data['notes'] ?? ''
         ]);
         
-        echo json_encode(['status' => 'success', 'id' => $pdo->lastInsertId()]);
+        $logId = $pdo->lastInsertId();
+        logActivity($pdo, $userId, 'add_log', "Added health log for " . ($data['date'] ?? date('Y-m-d')));
+        
+        echo json_encode(['status' => 'success', 'id' => $logId]);
     } catch (Exception $e) {
         http_response_code(500);
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);

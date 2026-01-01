@@ -70,8 +70,118 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 </div>
 
+<div class="hidden sm:block" aria-hidden="true">
+    <div class="py-5">
+        <div class="border-t border-gray-200 dark:border-gray-700"></div>
+    </div>
+</div>
+
+<div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:col-span-1">
+        <div class="px-4 sm:px-0">
+            <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white">Two-Factor Authentication</h3>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                Add an extra layer of security to your account.
+            </p>
+        </div>
+    </div>
+    <div class="mt-5 md:mt-0 md:col-span-2">
+        <div class="shadow sm:rounded-md sm:overflow-hidden">
+            <div class="px-4 py-5 bg-white dark:bg-gray-800 sm:p-6">
+                <div id="2faStatusSection">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Loading 2FA status...</p>
+                </div>
+                
+                <!-- Setup Area (Hidden by default) -->
+                <div id="2faSetupArea" class="hidden mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                        1. Scan this QR code with your authenticator app (Google Authenticator, Authy, etc).
+                    </p>
+                    <div class="flex justify-center mb-4">
+                        <img id="qrCodeImg" src="" alt="QR Code" class="border p-2 bg-white">
+                    </div>
+                    <p class="text-xs text-center text-gray-500 mb-4">Secret: <span id="secretKeyDisplay" class="font-mono font-bold"></span></p>
+                    
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                        2. Enter the 6-digit code from the app.
+                    </p>
+                    <div class="flex gap-2">
+                        <input type="text" id="verifyCodeInput" placeholder="123456" class="flex-1 shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md p-2 border">
+                        <button id="verify2faBtn" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            Verify & Enable
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="hidden sm:block" aria-hidden="true">
+    <div class="py-5">
+        <div class="border-t border-gray-200 dark:border-gray-700"></div>
+    </div>
+</div>
+
+<div class="md:grid md:grid-cols-3 md:gap-6">
+        <div class="md:col-span-1">
+            <div class="px-4 sm:px-0">
+                <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white">Audit Logs</h3>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    Recent activity on your account.
+                </p>
+            </div>
+        </div>
+        <div class="mt-5 md:mt-0 md:col-span-2">
+            <div class="shadow overflow-hidden sm:rounded-md">
+                 <div class="bg-white dark:bg-gray-800 px-4 py-5 sm:p-6">
+                     <div class="flow-root">
+                         <ul id="auditLogsList" class="-my-5 divide-y divide-gray-200 dark:divide-gray-700">
+                             <li class="py-4 text-center text-gray-500">Loading...</li>
+                         </ul>
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', async function() {
+    // Fetch Audit Logs
+    try {
+        const response = await fetch('audit_logs.php');
+        const result = await response.json();
+        const list = document.getElementById('auditLogsList');
+        
+        if (result.status === 'success' && result.data.length > 0) {
+            list.innerHTML = result.data.map(log => `
+                <li class="py-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                ${log.action.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                            </p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 truncate">
+                                ${log.details}
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-xs font-semibold text-gray-500 dark:text-gray-400">
+                             <div>
+                                <div>${new Date(log.created_at).toLocaleDateString()}</div>
+                                <div class="text-right">${new Date(log.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                             </div>
+                        </div>
+                    </div>
+                </li>
+            `).join('');
+        } else {
+            list.innerHTML = '<li class="py-4 text-center text-gray-500">No activity logs found.</li>';
+        }
+    } catch (e) {
+        console.error("Error fetching logs", e);
+    }
+
     // Fetch user data
     try {
         const response = await fetch('profile.php');
@@ -85,6 +195,103 @@ document.addEventListener('DOMContentLoaded', async function() {
     } catch (error) {
         console.error('Error fetching profile:', error);
     }
+
+    // 2FA Logic
+    const statusSection = document.getElementById('2faStatusSection');
+    const setupArea = document.getElementById('2faSetupArea');
+    const verifyBtn = document.getElementById('verify2faBtn');
+
+    async function check2FAStatus() {
+        try {
+            const res = await fetch('2fa_setup.php?action=status');
+            const data = await res.json();
+            
+            if (data.status === 'success') {
+                if (data.enabled) {
+                    statusSection.innerHTML = `
+                        <div class="flex items-center text-green-600 mb-4">
+                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Two-Factor Authentication is ENABLED.
+                        </div>
+                        <button id="disable2faBtn" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            Disable 2FA
+                        </button>
+                    `;
+                    setupArea.classList.add('hidden');
+                    
+                    document.getElementById('disable2faBtn').addEventListener('click', async () => {
+                        const password = prompt("Enter your password to disable 2FA:");
+                        if (!password) return;
+                        
+                        const res = await fetch('2fa_setup.php?action=disable', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({password})
+                        });
+                        const result = await res.json();
+                        if (result.status === 'success') {
+                            Toastify({ text: "2FA Disabled", backgroundColor: "#059669" }).showToast();
+                            check2FAStatus();
+                        } else {
+                            Toastify({ text: result.message, backgroundColor: "#EF4444" }).showToast();
+                        }
+                    });
+                } else {
+                    statusSection.innerHTML = `
+                        <p class="text-sm text-gray-500 mb-4">2FA is currently DISABLED.</p>
+                        <button id="enable2faBtn" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            Enable 2FA
+                        </button>
+                    `;
+                    
+                    document.getElementById('enable2faBtn').addEventListener('click', async () => {
+                        const res = await fetch('2fa_setup.php?action=generate');
+                        const data = await res.json();
+                        
+                        if (data.status === 'success') {
+                            document.getElementById('qrCodeImg').src = data.qr_code_url;
+                            document.getElementById('secretKeyDisplay').innerText = data.secret;
+                            setupArea.classList.remove('hidden');
+                            statusSection.innerHTML = '<p class="text-sm text-gray-500">Scan the QR code below.</p>';
+                        }
+                    });
+                }
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    
+    check2FAStatus();
+    
+    verifyBtn.addEventListener('click', async () => {
+        const code = document.getElementById('verifyCodeInput').value;
+        if (code.length < 6) return;
+        
+        verifyBtn.disabled = true;
+        verifyBtn.innerText = 'Verifying...';
+        
+        try {
+            const res = await fetch('2fa_setup.php?action=verify', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({code})
+            });
+            const result = await res.json();
+            
+            if (result.status === 'success') {
+                Toastify({ text: "2FA Enabled Successfully!", backgroundColor: "#059669" }).showToast();
+                check2FAStatus();
+            } else {
+                Toastify({ text: result.message, backgroundColor: "#EF4444" }).showToast();
+                verifyBtn.disabled = false;
+                verifyBtn.innerText = 'Verify & Enable';
+            }
+        } catch (e) {
+            verifyBtn.disabled = false;
+            verifyBtn.innerText = 'Verify & Enable';
+        }
+    });
 
     // Handle Form Submit
     document.getElementById('profileForm').addEventListener('submit', async function(e) {

@@ -62,16 +62,23 @@ if (isset($_SESSION['user_id'])) {
 document.getElementById('forgotPasswordForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
-    const originalText = btn.innerText;
+    const email = document.getElementById('email').value;
 
     // Set Loading State
     btn.disabled = true;
     btn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Sending...';
 
-    // Mock API call since we don't have SMTP configured yet
-    setTimeout(() => {
+    try {
+        const response = await fetch('forgot_password.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+        
+        const result = await response.json();
+        
         Toastify({
-            text: "If an account exists with this email, a reset link has been sent.",
+            text: result.message,
             duration: 5000,
             gravity: "top",
             position: "right",
@@ -81,7 +88,16 @@ document.getElementById('forgotPasswordForm').addEventListener('submit', async f
         btn.disabled = false;
         btn.innerText = "Link Sent";
         document.getElementById('email').value = '';
-    }, 1500);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        btn.disabled = false;
+        btn.innerText = "Send Reset Link";
+        Toastify({
+            text: "An error occurred. Please try again.",
+            backgroundColor: "#EF4444",
+        }).showToast();
+    }
 });
 </script>
 

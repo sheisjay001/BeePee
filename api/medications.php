@@ -32,6 +32,12 @@ try {
         taken_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (medication_id) REFERENCES medications(id) ON DELETE CASCADE
     )");
+    
+    // Check and add type column if missing
+    $checkCol = $pdo->query("SHOW COLUMNS FROM medications LIKE 'type'");
+    if ($checkCol->rowCount() == 0) {
+        $pdo->exec("ALTER TABLE medications ADD COLUMN type VARCHAR(50) DEFAULT 'medication' AFTER name");
+    }
 } catch (PDOException $e) {
     // Ignore if exists or error, logging would be good
 }
@@ -66,11 +72,13 @@ if ($method === 'GET') {
                 // Untake (Delete log)
                 $del = $pdo->prepare("DELETE FROM medication_logs WHERE id = ?");
                 $del->execute([$log['id']]);
+                logActivity($pdo, $userId, 'untake_med', "Untook medication ID: $medId");
                 echo json_encode(['status' => 'success', 'message' => 'Marked as not taken']);
             } else {
                 // Take (Insert log)
                 $ins = $pdo->prepare("INSERT INTO medication_logs (medication_id, taken_date) VALUES (?, CURDATE())");
                 $ins->execute([$medId]);
+                logActivity($pdo, $userId, 'take_med', "Took medication ID: $medId");
                 echo json_encode(['status' => 'success', 'message' => 'Marked as taken']);
             }
         } catch (PDOException $e) {
@@ -81,6 +89,7 @@ if ($method === 'GET') {
         $name = $data['name'] ?? '';
         $dosage = $data['dosage'] ?? '';
         $time = $data['time'] ?? '';
+        $type = $data['type'] ?? 'medication';
         
         if (empty($name)) {
             echo json_encode(['status' => 'error', 'message' => 'Medication name is required']);
@@ -88,8 +97,9 @@ if ($method === 'GET') {
         }
         
         try {
-            $stmt = $pdo->prepare("INSERT INTO medications (user_id, name, dosage, schedule_time) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$userId, $name, $dosage, $time]);
+            $stmt = $pdo->prepare("INSERT INTO medications (user_id, name, dosage, schedule_time, type) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$userId, $name, $dosage, $time, $type]);
+            logActivity($pdo, $userId, 'add_med', "Added medication: $name");
             echo json_encode(['status' => 'success', 'message' => 'Medication added']);
         } catch (PDOException $e) {
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
@@ -107,6 +117,7 @@ if ($method === 'GET') {
     try {
         $stmt = $pdo->prepare("DELETE FROM medications WHERE id = ? AND user_id = ?");
         $stmt->execute([$medId, $userId]);
+        logActivity($pdo, $userId, 'delete_med', "Deleted medication ID: $medId");
         echo json_encode(['status' => 'success', 'message' => 'Medication deleted']);
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);

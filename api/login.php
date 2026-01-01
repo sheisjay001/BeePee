@@ -49,7 +49,7 @@ if (empty($email) || empty($password)) {
 
 try {
     // Fetch user
-    $stmt = $pdo->prepare("SELECT id, username, password_hash FROM users WHERE email = ?");
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
@@ -61,9 +61,19 @@ try {
         // Prevent Session Fixation
         session_regenerate_id(true);
 
+        // Check 2FA
+        if (!empty($user['is_2fa_enabled']) && $user['is_2fa_enabled'] == 1) {
+             $_SESSION['2fa_pending_user_id'] = $user['id'];
+             $_SESSION['2fa_pending_username'] = $user['username'];
+             echo json_encode(['status' => '2fa_required', 'message' => 'Two-factor authentication required']);
+             exit;
+        }
+
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         
+        logActivity($pdo, $user['id'], 'login', 'Logged in successfully');
+
         echo json_encode(['status' => 'success', 'message' => 'Login successful']);
     } else {
         // Log failed attempt

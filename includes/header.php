@@ -28,6 +28,19 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
+                        // Increase contrast for accessibility
+                        gray: {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            300: '#d1d5db',
+                            400: '#6b7280', // Darkened (was #9ca3af)
+                            500: '#374151', // Darkened (was #6b7280)
+                            600: '#1f2937', // Darkened (was #4b5563)
+                            700: '#111827',
+                            800: '#000000', // Darkest
+                            900: '#000000',
+                        },
                         primary: {
                             DEFAULT: '#059669',
                             50: '#ecfdf5',
@@ -62,6 +75,29 @@
         .btn-hover:hover { transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
         .card-hover { transition: all 0.3s ease; }
         .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+
+        /* Checkmark Animation */
+        .checkmark-circle {
+            width: 50px; height: 50px; position: relative; display: inline-block; vertical-align: top;
+        }
+        .checkmark-circle .background {
+            width: 50px; height: 50px; border-radius: 50%; background: #059669; position: absolute;
+        }
+        .checkmark-circle .checkmark {
+            border-radius: 5px;
+        }
+        .checkmark-circle .checkmark.draw:after {
+            animation-duration: 1.2s; animation-timing-function: ease; animation-name: checkmark; transform: scaleX(-1) rotate(135deg);
+        }
+        .checkmark-circle .checkmark:after {
+            opacity: 1; height: 25px; width: 12px; transform-origin: left top; border-right: 3px solid white; border-top: 3px solid white; content: ''; left: 14px; top: 26px; position: absolute;
+        }
+        @keyframes checkmark {
+            0% { height: 0; width: 0; opacity: 1; }
+            20% { height: 0; width: 12px; opacity: 1; }
+            40% { height: 25px; width: 12px; opacity: 1; }
+            100% { height: 25px; width: 12px; opacity: 1; }
+        }
     </style>
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
@@ -105,6 +141,12 @@
                     </div>
                 </div>
                 <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+                    <!-- PWA Install Button (Desktop) -->
+                    <button type="button" class="pwa-install-btn hidden text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Install App
+                    </button>
+
                     <!-- Dark Mode Toggle -->
                     <button type="button" class="theme-toggle-btn text-gray-300 hover:text-white focus:outline-none rounded-lg text-sm p-2.5">
                         <svg class="theme-toggle-dark-icon hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
@@ -153,6 +195,12 @@
                     <a href="chat_ui.php" class="text-gray-300 hover:bg-primary-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">AI Health Coach</a>
                     <a href="profile_ui.php" class="text-gray-300 hover:bg-primary-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Profile</a>
                     
+                    <!-- PWA Install Button (Mobile) -->
+                    <button type="button" class="pwa-install-btn hidden w-full text-left text-gray-300 hover:bg-primary-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Install App
+                    </button>
+
                     <div class="border-t border-primary-800 pt-4 pb-3">
                         <div class="flex items-center px-5">
                             <div class="ml-3">
@@ -239,6 +287,47 @@
                     }
                 }
             });
+        });
+
+        // PWA Install Prompt Logic
+        let deferredPrompt;
+        const installButtons = document.querySelectorAll('.pwa-install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            deferredPrompt = e;
+            // Update UI to notify the user they can add to home screen
+            installButtons.forEach(btn => btn.classList.remove('hidden'));
+            console.log('beforeinstallprompt fired');
+        });
+
+        installButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Hide the app provided install promotion
+                installButtons.forEach(b => b.classList.add('hidden'));
+                // Show the install prompt
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    // Wait for the user to respond to the prompt
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the A2HS prompt');
+                        } else {
+                            console.log('User dismissed the A2HS prompt');
+                        }
+                        deferredPrompt = null;
+                    });
+                }
+            });
+        });
+
+        window.addEventListener('appinstalled', () => {
+            // Hide the app-provided install promotion
+            installButtons.forEach(b => b.classList.add('hidden'));
+            deferredPrompt = null;
+            console.log('PWA was installed');
         });
     </script>
     <main class="flex-grow">

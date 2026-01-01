@@ -44,13 +44,21 @@ if (!isset($_SESSION['user_id'])) {
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Add New Medication</h3>
+                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Add New Reminder</h3>
                 <div class="mt-4 space-y-4">
                     <div>
-                        <label for="medName" class="block text-sm font-medium text-gray-700">Medication Name</label>
-                        <input type="text" id="medName" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm border p-2" placeholder="e.g. Lisinopril">
+                        <label for="medType" class="block text-sm font-medium text-gray-700">Type</label>
+                        <select id="medType" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm border p-2" onchange="toggleDosageField()">
+                            <option value="medication">Medication</option>
+                            <option value="measurement">BP/Sugar Check</option>
+                            <option value="other">Other Activity</option>
+                        </select>
                     </div>
                     <div>
+                        <label for="medName" class="block text-sm font-medium text-gray-700">Name</label>
+                        <input type="text" id="medName" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm border p-2" placeholder="e.g. Lisinopril or Morning BP Check">
+                    </div>
+                    <div id="dosageField">
                         <label for="medDosage" class="block text-sm font-medium text-gray-700">Dosage (Optional)</label>
                         <input type="text" id="medDosage" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm border p-2" placeholder="e.g. 10mg">
                     </div>

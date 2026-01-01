@@ -153,6 +153,41 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Inject Checkmark Overlay
+    const checkmarkOverlay = document.createElement('div');
+    checkmarkOverlay.id = 'success-checkmark-overlay';
+    checkmarkOverlay.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-25 hidden transition-opacity duration-300 opacity-0';
+    checkmarkOverlay.innerHTML = `
+        <div class="bg-white rounded-xl p-6 shadow-2xl transform scale-100 flex flex-col items-center">
+            <div class="checkmark-circle">
+                <div class="background"></div>
+                <div class="checkmark"></div>
+            </div>
+            <div class="mt-4 font-bold text-gray-800 text-lg">Saved!</div>
+        </div>
+    `;
+    document.body.appendChild(checkmarkOverlay);
+
+    function showSuccessCheckmark() {
+        const overlay = document.getElementById('success-checkmark-overlay');
+        const checkmark = overlay.querySelector('.checkmark');
+        
+        overlay.classList.remove('hidden');
+        // Small delay to allow display:block to apply before opacity transition
+        setTimeout(() => {
+            overlay.classList.remove('opacity-0');
+            checkmark.classList.add('draw');
+        }, 10);
+
+        setTimeout(() => {
+            overlay.classList.add('opacity-0');
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                checkmark.classList.remove('draw');
+            }, 300);
+        }, 1500);
+    }
+
     // Handle Form Submit
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -181,13 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
 
             if (result.status === 'success') {
-                Toastify({
-                    text: "Log saved successfully!",
-                    duration: 3000,
-                    gravity: "top",
-                    position: "right",
-                    backgroundColor: "#059669",
-                }).showToast();
+                showSuccessCheckmark();
                 
                 form.reset();
                 document.getElementById('date').valueAsDate = new Date();
