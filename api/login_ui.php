@@ -57,7 +57,7 @@ if (isset($_SESSION['user_id'])) {
                 </div>
 
                 <div>
-                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                    <button type="submit" id="loginBtn" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed">
                         Sign in
                     </button>
                 </div>
@@ -71,6 +71,13 @@ if (isset($_SESSION['user_id'])) {
 <script>
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
+    const btn = document.getElementById('loginBtn');
+    const originalText = btn.innerText;
+
+    // Set Loading State
+    btn.disabled = true;
+    btn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Signing in...';
+
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
     const messageEl = document.getElementById('message');
@@ -98,6 +105,22 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
                 position: "right",
                 backgroundColor: "#EF4444",
             }).showToast();
+            btn.disabled = false;
+            btn.innerText = originalText;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        Toastify({
+            text: "An error occurred. Please try again.",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#EF4444",
+        }).showToast();
+        btn.disabled = false;
+        btn.innerText = originalText;
+    }
+});
         }
     } catch (error) {
         console.error('Error:', error);

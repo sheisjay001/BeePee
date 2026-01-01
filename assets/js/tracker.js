@@ -68,6 +68,13 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        const btn = form.querySelector('button[type="submit"]');
+        const originalText = btn.innerText;
+
+        // Set Loading State
+        btn.disabled = true;
+        btn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Saving...';
+
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -114,6 +121,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 position: "right",
                 backgroundColor: "#EF4444",
             }).showToast();
+        } finally {
+            btn.disabled = false;
+            btn.innerText = originalText;
         }
     });
 

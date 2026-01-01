@@ -1,6 +1,8 @@
 <?php
 // includes/config.php
 
+require_once __DIR__ . '/security_headers.php';
+
 // Ensure DB connection is available for session handling
 require_once __DIR__ . '/db.php';
 
