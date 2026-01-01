@@ -34,15 +34,23 @@ if (!isset($_SESSION['user_id'])) {
                 </nav>
             </div>
 
-            <div class="flex items-center space-x-2">
-                <label for="regionFilter" class="text-sm font-medium text-gray-700">Region:</label>
-                <select id="regionFilter" onchange="updateFilters()" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md border">
-                    <option value="all">All Regions</option>
-                    <option value="africa">Africa (including Nigeria)</option>
-                    <option value="asia">Asia</option>
-                    <option value="europe">Europe / Mediterranean</option>
-                    <option value="americas">Americas</option>
-                </select>
+            <div class="w-full sm:w-auto mt-2 sm:mt-0">
+                <label for="regionFilter" class="sr-only">Filter by Region</label>
+                <div class="relative rounded-md shadow-sm w-full">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
+                        <!-- Filter Icon -->
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <select id="regionFilter" onchange="updateFilters()" class="block w-full pl-10 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md border bg-white shadow-sm text-gray-900 font-medium cursor-pointer">
+                        <option value="all">Global (All Regions)</option>
+                        <option value="africa">Africa (including Nigeria)</option>
+                        <option value="asia">Asia</option>
+                        <option value="europe">Europe / Mediterranean</option>
+                        <option value="americas">Americas</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
