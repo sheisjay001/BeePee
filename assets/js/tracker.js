@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('trackerForm');
     const tableBody = document.getElementById('logsTableBody');
     let chart;
+    let userHeight = null;
 
     // Initialize Chart
     const ctx = document.getElementById('healthChart').getContext('2d');
@@ -62,7 +63,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Load Data
-    fetchLogs();
+    init();
+
+    async function init() {
+        await fetchProfile();
+        await fetchLogs();
+    }
+
+    async function fetchProfile() {
+        try {
+            const response = await fetch('api/profile.php');
+            const result = await response.json();
+            if (result.status === 'success') {
+                userHeight = result.data.height;
+            }
+        } catch (error) {
+            console.error('Error fetching profile:', error);
+        }
+    }
 
     // Handle Form Submit
     form.addEventListener('submit', async function(e) {
@@ -136,9 +154,66 @@ document.addEventListener('DOMContentLoaded', function() {
                 const logs = result.data;
                 updateChart(logs);
                 updateTable(logs);
+                updateSummary(logs);
             }
         } catch (error) {
             console.error('Error fetching logs:', error);
+        }
+    }
+
+    function updateSummary(logs) {
+        if (!logs || logs.length === 0) return;
+
+        // Averages
+        const validSys = logs.filter(l => l.systolic).map(l => parseInt(l.systolic));
+        const avgSys = validSys.length ? Math.round(validSys.reduce((a, b) => a + b, 0) / validSys.length) : '--';
+        const avgSysEl = document.getElementById('avgSystolic');
+        if(avgSysEl) avgSysEl.innerText = avgSys + (avgSys !== '--' ? ' mmHg' : '');
+
+        const validDia = logs.filter(l => l.diastolic).map(l => parseInt(l.diastolic));
+        const avgDia = validDia.length ? Math.round(validDia.reduce((a, b) => a + b, 0) / validDia.length) : '--';
+        const avgDiaEl = document.getElementById('avgDiastolic');
+        if(avgDiaEl) avgDiaEl.innerText = avgDia + (avgDia !== '--' ? ' mmHg' : '');
+
+        const validSugar = logs.filter(l => l.blood_sugar).map(l => parseFloat(l.blood_sugar));
+        const avgSugar = validSugar.length ? Math.round(validSugar.reduce((a, b) => a + b, 0) / validSugar.length) : '--';
+        const avgSugarEl = document.getElementById('avgSugar');
+        if(avgSugarEl) avgSugarEl.innerText = avgSugar + (avgSugar !== '--' ? ' mg/dL' : '');
+
+        // Latest Weight
+        const sortedByDate = [...logs].sort((a, b) => new Date(b.log_date) - new Date(a.log_date));
+        const latestWeightLog = sortedByDate.find(l => l.weight);
+        const latestWeight = latestWeightLog ? parseFloat(latestWeightLog.weight) : null;
+        
+        const latestWeightEl = document.getElementById('latestWeight');
+        if(latestWeightEl) latestWeightEl.innerText = latestWeight ? latestWeight + ' kg' : '--';
+
+        // BMI
+        const bmiDisplayEl = document.getElementById('bmiDisplay');
+        const bmiCategoryEl = document.getElementById('bmiCategory');
+        
+        if (bmiDisplayEl && bmiCategoryEl) {
+            if (latestWeight && userHeight) {
+                const heightM = userHeight / 100;
+                const bmi = (latestWeight / (heightM * heightM)).toFixed(1);
+                bmiDisplayEl.innerText = bmi;
+                
+                let category = '';
+                let color = '';
+                if (bmi < 18.5) { category = 'Underweight'; color = 'text-blue-600'; }
+                else if (bmi < 25) { category = 'Normal weight'; color = 'text-green-600'; }
+                else if (bmi < 30) { category = 'Overweight'; color = 'text-yellow-600'; }
+                else { category = 'Obese'; color = 'text-red-600'; }
+                
+                bmiCategoryEl.innerText = category;
+                bmiCategoryEl.className = `text-xs font-medium ${color}`;
+            } else if (!userHeight) {
+                bmiDisplayEl.innerText = '--';
+                bmiCategoryEl.innerHTML = '<a href="/api/profile_ui.php" class="text-primary hover:underline">Set height</a>';
+            } else {
+                bmiDisplayEl.innerText = '--';
+                bmiCategoryEl.innerText = 'Add weight log';
+            }
         }
     }
 
@@ -187,11 +262,5 @@ document.addEventListener('DOMContentLoaded', function() {
         chart.data.datasets[1].data = sortedLogs.map(l => l.diastolic);
         chart.data.datasets[2].data = sortedLogs.map(l => l.blood_sugar);
         chart.update();
-
-        // Calculate Averages
-        if (logs.length > 0) {
-             const avgSys = Math.round(logs.reduce((acc, curr) => acc + (parseInt(curr.systolic) || 0), 0) / logs.filter(l => l.systolic).length) || '--';
-             document.getElementById('avgSystolic').innerText = avgSys + ' mmHg';
-        }
     }
 });

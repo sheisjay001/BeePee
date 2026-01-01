@@ -58,6 +58,9 @@ try {
         // Clear attempts on success
         $pdo->prepare("DELETE FROM login_attempts WHERE ip_address = ?")->execute([$ip_address]);
 
+        // Prevent Session Fixation
+        session_regenerate_id(true);
+
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         

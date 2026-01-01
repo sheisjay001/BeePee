@@ -19,6 +19,7 @@
     
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -69,8 +70,8 @@
         }
     </script>
 </head>
-<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
-    <nav class="bg-primary-900 shadow-lg border-b border-primary-800 sticky top-0 z-50">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 flex flex-col min-h-screen transition-colors duration-200">
+    <nav class="bg-primary-900 dark:bg-gray-800 shadow-lg border-b border-primary-800 dark:border-gray-700 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex">
@@ -85,47 +86,96 @@
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                         <?php if (!isset($_SESSION['user_id'])): ?>
                             <a href="index.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Home</a>
+                        <?php else: ?>
+                            <a href="dashboard" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Dashboard</a>
+                            <a href="meal_prep.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Meal Prep</a>
+                            <a href="chat.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">AI Health Coach</a>
+                            <a href="/api/profile_ui.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Profile</a>
                         <?php endif; ?>
-                        <a href="dashboard" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Dashboard</a>
-                        <a href="meal_prep.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Meal Prep</a>
-                        <a href="chat.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Ask AI</a>
                     </div>
                 </div>
-                <div class="hidden sm:flex sm:items-center">
-                    <?php if (isset($_SESSION['user_id'])): ?>
-                        <span class="text-gray-300 text-sm mr-4">Hi, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                        <a href="#" onclick="logout()" class="text-gray-300 hover:text-white text-sm font-medium">Logout</a>
-                    <?php else: ?>
-                        <a href="login" class="text-gray-300 hover:text-white text-sm font-medium mr-4">Login</a>
-                        <a href="register" class="bg-accent text-primary-900 hover:bg-white px-3 py-2 rounded-md text-sm font-medium">Sign Up</a>
-                    <?php endif; ?>
-                </div>
-                <div class="flex items-center sm:hidden">
-                    <!-- Mobile menu button -->
-                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-accent" aria-controls="mobile-menu" aria-expanded="false" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-                        <span class="sr-only">Open main menu</span>
-                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+                    <!-- Dark Mode Toggle -->
+                    <button id="theme-toggle" type="button" class="text-gray-300 hover:text-white focus:outline-none rounded-lg text-sm p-2.5">
+                        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
                     </button>
+
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <div class="ml-3 relative flex items-center gap-4">
+                            <span class="text-gray-300 text-sm">Hello, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                            <a href="logout.php" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Sign out</a>
+                        </div>
+                    <?php else: ?>
+                        <a href="login" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Sign in</a>
+                        <a href="register" class="bg-accent hover:bg-yellow-400 text-primary-900 px-3 py-2 rounded-md text-sm font-bold transition-colors duration-200">Get Started</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
-        <div class="sm:hidden hidden bg-primary-800" id="mobile-menu">
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="sm:hidden" id="mobile-menu">
             <div class="pt-2 pb-3 space-y-1">
                 <?php if (!isset($_SESSION['user_id'])): ?>
-                    <a href="index.php" class="bg-primary-900 border-accent text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
-                <?php endif; ?>
-                <a href="dashboard" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Dashboard</a>
-                <a href="meal_prep.php" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Meal Prep</a>
-                <a href="chat.php" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Ask AI</a>
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <a href="#" onclick="logout()" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Logout</a>
+                    <a href="index.php" class="border-transparent text-gray-300 hover:bg-primary-800 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                    <a href="login" class="border-transparent text-gray-300 hover:bg-primary-800 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Sign in</a>
+                    <a href="register" class="border-transparent text-gray-300 hover:bg-primary-800 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Get Started</a>
                 <?php else: ?>
-                    <a href="login" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Login</a>
-                    <a href="register" class="border-transparent text-gray-300 hover:bg-primary-700 hover:border-gray-300 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Sign Up</a>
+                    <a href="dashboard" class="bg-primary-800 border-accent text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Dashboard</a>
+                    <a href="meal_prep.php" class="border-transparent text-gray-300 hover:bg-primary-800 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Meal Prep</a>
+                    <a href="chat.php" class="border-transparent text-gray-300 hover:bg-primary-800 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">AI Health Coach</a>
+                    <a href="/api/profile_ui.php" class="border-transparent text-gray-300 hover:bg-primary-800 hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Profile</a>
+                    <a href="logout.php" class="border-transparent text-red-300 hover:bg-primary-800 hover:text-red-100 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Sign out</a>
                 <?php endif; ?>
             </div>
         </div>
     </nav>
+
+    <script>
+        // Check for saved theme preference or use system preference
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (themeToggleBtn) {
+            // Change the icons inside the button based on previous settings
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                lightIcon.classList.remove('hidden');
+            } else {
+                darkIcon.classList.remove('hidden');
+            }
+
+            themeToggleBtn.addEventListener('click', function() {
+                // Toggle icons
+                darkIcon.classList.toggle('hidden');
+                lightIcon.classList.toggle('hidden');
+
+                // If is set in localstorage
+                if (localStorage.getItem('color-theme')) {
+                    if (localStorage.getItem('color-theme') === 'light') {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                } else {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    }
+                }
+            });
+        }
+    </script>
     <main class="flex-grow">

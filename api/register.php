@@ -12,6 +12,24 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+$ip_address = $_SERVER['REMOTE_ADDR'];
+$time_window = 300; // 5 minutes
+$max_attempts = 5;
+
+// Clean up old attempts
+$pdo->prepare("DELETE FROM login_attempts WHERE attempt_time < ?")->execute([time() - $time_window]);
+
+// Check attempt count
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM login_attempts WHERE ip_address = ?");
+$stmt->execute([$ip_address]);
+$attempts = $stmt->fetchColumn();
+
+if ($attempts >= $max_attempts) {
+    http_response_code(429);
+    echo json_encode(['status' => 'error', 'message' => 'Too many requests. Please try again in 5 minutes.']);
+    exit;
+}
+
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!$data) {
@@ -53,6 +71,9 @@ try {
     $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ? OR username = ?");
     $stmt->execute([$email, $username]);
     if ($stmt->fetch()) {
+        // Log failed attempt
+        $pdo->prepare("INSERT INTO login_attempts (ip_address, attempt_time) VALUES (?, ?)")->execute([$ip_address, time()]);
+        
         http_response_code(409);
         echo json_encode(['status' => 'error', 'message' => 'User already exists']);
         exit;
