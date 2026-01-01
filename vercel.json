@@ -7,6 +7,22 @@
     { "src": "/sw.js", "dest": "/sw.js" },
     { "src": "/assets/(.*)", "dest": "/assets/$1" },
     { "src": "/api/(.*)", "dest": "/api/$1" },
+    
+    { "src": "/login_ui.php", "dest": "/api/login_ui.php" },
+    { "src": "/register_ui.php", "dest": "/api/register_ui.php" },
+    { "src": "/tracker_ui.php", "dest": "/api/tracker_ui.php" },
+    { "src": "/chat_ui.php", "dest": "/api/chat_ui.php" },
+    { "src": "/profile_ui.php", "dest": "/api/profile_ui.php" },
+    { "src": "/logout.php", "dest": "/api/logout.php" },
+    
+    { "src": "/login.php", "dest": "/api/login.php" },
+    { "src": "/register.php", "dest": "/api/register.php" },
+    { "src": "/profile.php", "dest": "/api/profile.php" },
+    { "src": "/chat.php", "dest": "/api/chat.php" },
+    { "src": "/tracker.php", "dest": "/api/tracker.php" },
+    { "src": "/export_logs.php", "dest": "/api/export_logs.php" },
+    { "src": "/generate_meal.php", "dest": "/api/generate_meal.php" },
+
     { "src": "/dashboard", "dest": "/api/tracker_ui.php" },
     { "src": "/tracker", "dest": "/api/tracker_ui.php" },
     { "src": "/tracker.php", "dest": "/api/tracker_ui.php" },
