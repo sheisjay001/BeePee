@@ -50,7 +50,7 @@ if (isset($_SESSION['user_id'])) {
                     </div>
 
                     <div class="text-sm">
-                        <a href="#" class="font-medium text-primary hover:text-secondary">
+                        <a href="forgot_password_ui.php" class="font-medium text-primary hover:text-secondary">
                             Forgot your password?
                         </a>
                     </div>
