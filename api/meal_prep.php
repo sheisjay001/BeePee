@@ -2,7 +2,7 @@
 include __DIR__ . '/../includes/header.php'; 
 
 if (!isset($_SESSION['user_id'])) {
-    echo "<script>window.location.href = '/login';</script>";
+    echo "<script>window.location.href = 'login_ui.php';</script>";
     exit;
 }
 ?>

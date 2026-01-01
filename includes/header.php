@@ -87,10 +87,10 @@
                         <?php if (!isset($_SESSION['user_id'])): ?>
                             <a href="index.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Home</a>
                         <?php else: ?>
-                            <a href="dashboard" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Dashboard</a>
+                            <a href="tracker_ui.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Dashboard</a>
                             <a href="meal_prep.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Meal Prep</a>
-                            <a href="chat.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">AI Health Coach</a>
-                            <a href="/api/profile_ui.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Profile</a>
+                            <a href="chat_ui.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">AI Health Coach</a>
+                            <a href="profile_ui.php" class="border-transparent text-gray-300 hover:text-white hover:border-accent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">Profile</a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -109,7 +109,7 @@
                     <?php else: ?>
                         <a href="login_ui.php" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Sign in</a>
                         <a href="register_ui.php" class="bg-accent hover:bg-yellow-400 text-primary-900 px-3 py-2 rounded-md text-sm font-bold transition-colors duration-200">Get Started</a>
-                    <?php endif; ?
+                    <?php endif; ?>
         </div>
     </nav>
 
