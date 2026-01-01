@@ -14,7 +14,7 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
     <!-- Summary Cards -->
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 mb-8">
         <div class="bg-white overflow-hidden shadow rounded-lg">
             <div class="p-5">
                 <div class="flex items-center">
@@ -101,6 +101,26 @@ if (!isset($_SESSION['user_id'])) {
                 </div>
             </div>
         </div>
+        <!-- Streak Card -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <svg class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+                        </svg>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Current Streak</dt>
+                            <dd class="text-lg font-medium text-gray-900" id="streakDisplay">0 days</dd>
+                            <dd class="text-xs text-gray-500">Keep it up!</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="md:grid md:grid-cols-3 md:gap-6">
@@ -118,6 +138,9 @@ if (!isset($_SESSION['user_id'])) {
                         <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
                             <h3 class="text-lg leading-6 font-medium text-gray-900">Recent Logs</h3>
                             <div class="flex space-x-2">
+                                <a href="report_ui.php" target="_blank" class="text-sm bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-3 py-2 rounded-md font-medium transition-colors">
+                                    Print Report
+                                </a>
                                 <a href="export_logs.php" target="_blank" class="text-sm bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-3 py-2 rounded-md font-medium transition-colors">
                                     Export CSV
                                 </a>
@@ -189,7 +212,7 @@ if (!isset($_SESSION['user_id'])) {
                                 </div>
                             </div>
 
-                            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cta hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cta btn-hover transition-colors duration-200">
                                 Save Log
                             </button>
                         </div>

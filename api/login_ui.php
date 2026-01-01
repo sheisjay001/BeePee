@@ -69,6 +69,19 @@ if (isset($_SESSION['user_id'])) {
 </div>
 
 <script>
+// Real-time Input Validation
+document.getElementById('email').addEventListener('input', function(e) {
+    const email = e.target.value;
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (email && !isValid) {
+        e.target.classList.add('border-red-500', 'text-red-900');
+        e.target.classList.remove('border-gray-300');
+    } else {
+        e.target.classList.remove('border-red-500', 'text-red-900');
+        e.target.classList.add('border-gray-300');
+    }
+});
+
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = document.getElementById('loginBtn');

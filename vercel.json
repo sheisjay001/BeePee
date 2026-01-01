@@ -14,6 +14,7 @@
     { "src": "/chat_ui.php", "dest": "/api/chat_ui.php" },
     { "src": "/profile_ui.php", "dest": "/api/profile_ui.php" },
     { "src": "/forgot_password_ui.php", "dest": "/api/forgot_password_ui.php" },
+    { "src": "/report_ui.php", "dest": "/api/report_ui.php" },
     { "src": "/logout.php", "dest": "/api/logout.php" },
     
     { "src": "/login.php", "dest": "/api/login.php" },
