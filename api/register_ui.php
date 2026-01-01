@@ -2,7 +2,7 @@
 include __DIR__ . '/../includes/header.php'; 
 
 if (isset($_SESSION['user_id'])) {
-    echo "<script>window.location.href = '/dashboard';</script>";
+    echo "<script>window.location.href = 'tracker_ui.php';</script>";
     exit;
 }
 ?>

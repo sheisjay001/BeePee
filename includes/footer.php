@@ -24,8 +24,8 @@
     <script>
     async function logout() {
         try {
-            await fetch('/api/logout.php');
-            window.location.href = '/login';
+            await fetch('logout.php');
+            window.location.href = 'login_ui.php';
         } catch (e) {
             console.error('Logout failed', e);
         }

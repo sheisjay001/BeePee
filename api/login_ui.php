@@ -84,7 +84,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     try {
-        const response = await fetch('/api/login.php', {
+        const response = await fetch('login.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const result = await response.json();
 
         if (response.ok) {
-            window.location.href = '/dashboard';
+            window.location.href = 'tracker_ui.php';
         } else {
             Toastify({
                 text: result.message || 'Login failed',
